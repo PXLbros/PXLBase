@@ -5,7 +5,7 @@
   {
     "psr-4":
     {
-      "PXLBros\\pxlBase\\": "src/PXLBros/pxlBase/"
+      "PXLBros\\PXLBase\\": "src/PXLBros/PXLBase/"
     }
   },
   "minimum-stability": "dev"

@@ -1,4 +1,4 @@
-<?php namespace PXLBros\pxlBase\Helpers;
+<?php namespace PXLBros\PXLBase\Helpers;
 
 class Ajax
 {

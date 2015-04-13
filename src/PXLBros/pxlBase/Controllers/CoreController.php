@@ -1,4 +1,4 @@
-<?php namespace PXLBros\pxlBase\Controllers;
+<?php namespace PXLBros\PXLBase\Controllers;
 
 abstract class CoreController extends \Illuminate\Routing\Controller
 {

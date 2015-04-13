@@ -1,81 +1,81 @@
-<?php namespace PXLBros\pxlBase\Helpers;
+<?php namespace PXLBros\PXLBase\Helpers;
 
 class UI
 {
-	const MESSAGE_SESSION_NAME = 'pxlbase_message';
+	const NOTIFICATION_SESSION_NAME = 'pxlbase_notification';
 
-	const MESSAGE_TYPE_DEFAULT = 1;
-	const MESSAGE_TYPE_SUCCESS = 2;
-	const MESSAGE_TYPE_INFO = 3;
-	const MESSAGE_TYPE_WARNING = 4;
-	const MESSAGE_TYPE_ERROR = 5;
+	const NOTIFICATION_TYPE_DEFAULT = 1;
+	const NOTIFICATION_TYPE_SUCCESS = 2;
+	const NOTIFICATION_TYPE_INFO = 3;
+	const NOTIFICATION_TYPE_WARNING = 4;
+	const NOTIFICATION_TYPE_ERROR = 5;
 
-	private $message =
+	private $notification =
 	[
 		'pre_loaded' => NULL,
 		'user_loaded' => NULL
 	];
 
-	public function setMessage($text, $type = self::MESSAGE_TYPE_DEFAULT)
+	public function setNotification($text, $type = self::NOTIFICATION_TYPE_DEFAULT)
 	{
-		$this->message['user_loaded'] =
+		$this->notification['user_loaded'] =
 		[
 			'text' => $text,
 			'type' => $type
 		];
 
-		$this->saveMessage();
+		$this->saveNotification();
 	}
 
-	public function showMessage($text)
+	public function showNotification($text)
 	{
-		$this->setMessage($text, self::MESSAGE_TYPE_DEFAULT);
+		$this->setNotification($text, self::NOTIFICATION_TYPE_DEFAULT);
 	}
 
 	public function showSuccess($text)
 	{
-		$this->setMessage($text, self::MESSAGE_TYPE_SUCCESS);
+		$this->setNotification($text, self::NOTIFICATION_TYPE_SUCCESS);
 	}
 
 	public function showInfo($text)
 	{
-		$this->setMessage($text, self::MESSAGE_TYPE_INFO);
+		$this->setNotification($text, self::NOTIFICATION_TYPE_INFO);
 	}
 
 	public function showWarning($text)
 	{
-		$this->setMessage($text, self::MESSAGE_TYPE_WARNING);
+		$this->setNotification($text, self::NOTIFICATION_TYPE_WARNING);
 	}
 
 	public function showError($text)
 	{
-		$this->setMessage($text, self::MESSAGE_TYPE_ERROR);
+		$this->setNotification($text, self::NOTIFICATION_TYPE_ERROR);
 	}
 
-	public function deleteMessage()
+	public function deleteNotification()
 	{
-		\Session::forget(self::MESSAGE_SESSION_NAME);
+		\Session::forget(self::NOTIFICATION_SESSION_NAME);
 	}
 
-	private function saveMessage()
+	private function saveNotification()
 	{
-		\Session::set(self::MESSAGE_SESSION_NAME, $this->message['user_loaded']);
+		\Session::set(self::NOTIFICATION_SESSION_NAME, $this->notification['user_loaded']);
 	}
 
-	public function getMessage()
+	public function getNotification()
 	{
-		return \Session::get(self::MESSAGE_SESSION_NAME);
+		return \Session::get(self::NOTIFICATION_SESSION_NAME);
 	}
 
-	public function haveMessage()
+	public function haveNotification()
 	{
-		return \Session::has(self::MESSAGE_SESSION_NAME);
+		return \Session::has(self::NOTIFICATION_SESSION_NAME);
 	}
 
 	public function output()
 	{
 		$this->deleteSession();
 
-		return json_encode($this->message['pre_loaded']);
+		return json_encode($this->notification['pre_loaded']);
 	}
 }

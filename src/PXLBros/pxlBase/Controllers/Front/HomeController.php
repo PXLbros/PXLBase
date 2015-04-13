@@ -1,4 +1,4 @@
-<?php namespace PXLBros\pxlBase\Controllers\Front;
+<?php namespace PXLBros\PXLBase\Controllers\Front;
 
 class HomeController extends FrontController
 {
