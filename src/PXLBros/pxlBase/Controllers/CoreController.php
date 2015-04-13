@@ -1,6 +1,8 @@
 <?php namespace PXLBros\PXLBase\Controllers;
 
+use PXLBros\PXLBase\Helpers\Ajax;
 use PXLBros\PXLBase\Helpers\Str;
+use PXLBros\PXLBase\Helpers\UI;
 
 abstract class CoreController extends \Illuminate\Routing\Controller
 {
@@ -85,7 +87,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->base_url = \URL::route('home', [], FALSE);
 		$this->assign('base_url', $this->base_url, [self::SECTION_LAYOUT, self::SECTION_JS]);
 
-		$this->ui = new \App\Helpers\Core\UI();
+		$this->ui = new UI();
 
 		if ( $this->ui->haveMessage() )
 		{
@@ -95,7 +97,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		$this->is_ajax = (\Request::ajax() === TRUE);
-		$this->ajax = new \App\Helpers\Core\Ajax($this->ui);
+		$this->ajax = new Ajax($this->ui);
 
 		// CSRF
 		$csrf_token = csrf_token();
