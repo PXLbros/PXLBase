@@ -420,4 +420,18 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		return $this->current_action['original'];
 	}
+
+	private function getCSSHTML()
+	{
+		$css_html_view = view('pxlbase::layouts/partials/css');
+
+		return $css_html_view->render();
+	}
+
+	private function getJSHTML()
+	{
+		$js_html_view = view('pxlbase::layouts/partials/js');
+
+		return $js_html_view->render();
+	}
 }
