@@ -11,7 +11,7 @@ class PXLBaseServiceProvider extends \Illuminate\Support\ServiceProvider
 			__DIR__ . '/../../config/pxlbase.php' => config_path('pxlbase.php')
 		]);
 
-		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxlbros');
+		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxlbase');
 
 	    $this->publishes(
 	    [
