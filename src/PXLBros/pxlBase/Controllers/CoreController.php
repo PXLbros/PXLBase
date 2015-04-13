@@ -1,10 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Validation\ValidatesRequests;
-
-abstract class CoreController extends Controller
+abstract class CoreController extends \Illuminate\Routing\Controller
 {
-	use ValidatesRequests;
+	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 	const SECTION_ALL = 'all';
 	const SECTION_LAYOUT = 'layout';
@@ -158,10 +156,10 @@ abstract class CoreController extends Controller
 	protected function addLibrary($library_name, $css_files = NULL, $js_files = NULL)
 	{
 		$this->libraries[$library_name] =
-		[
-			self::ASSET_CSS => $css_files,
-			self::ASSET_JS => $js_files
-		];
+			[
+				self::ASSET_CSS => $css_files,
+				self::ASSET_JS => $js_files
+			];
 	}
 
 	protected function loadCSS($path, $external = FALSE)
@@ -178,10 +176,10 @@ abstract class CoreController extends Controller
 		}
 
 		$this->assets[self::ASSET_CSS][] =
-		[
-			'path' => $path,
-			'external' => $external
-		];
+			[
+				'path' => $path,
+				'external' => $external
+			];
 	}
 
 	protected function loadJS($path, $external = FALSE)
@@ -198,10 +196,10 @@ abstract class CoreController extends Controller
 		}
 
 		$this->assets[self::ASSET_JS][] =
-		[
-			'path' => $path,
-			'external' => $external
-		];
+			[
+				'path' => $path,
+				'external' => $external
+			];
 	}
 
 	protected function loadLibrary($library_name, $load_priority = self::LIBRARY_LOAD_PRIORITY_PRE)
