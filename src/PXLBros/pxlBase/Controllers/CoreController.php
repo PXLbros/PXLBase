@@ -1,5 +1,7 @@
 <?php namespace PXLBros\PXLBase\Controllers;
 
+use PXLBros\PXLBase\Helpers\Str;
+
 abstract class CoreController extends \Illuminate\Routing\Controller
 {
 	use \Illuminate\Foundation\Validation\ValidatesRequests;
@@ -68,14 +70,14 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->current_controller =
 		[
 			'original' => $current_controller,
-			'underscore' => \App\Helpers\Core\Str::hyphenToUnderscore($current_controller)
+			'underscore' => Str::hyphenToUnderscore($current_controller)
 		];
 
 		$this->current_action =
 		[
 			'original' => $method,
-			'underscore' => \App\Helpers\Core\Str::camelCaseToUnderscore($method),
-			'hyphen' => \App\Helpers\Core\Str::camelCaseToHyphen($method)
+			'underscore' => Str::camelCaseToUnderscore($method),
+			'hyphen' => Str::camelCaseToHyphen($method)
 		];
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
@@ -118,7 +120,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			throw new \Exception('Could not parse controller.');
 		}
 
-		return strtolower(str_replace('\\', '/', \App\Helpers\Core\Str::camelCaseToHyphen($controller_matches[1])));
+		return strtolower(str_replace('\\', '/', Str::camelCaseToHyphen($controller_matches[1])));
 	}
 
 	public function assign($key, $value, $section = self::SECTION_CONTENT)
