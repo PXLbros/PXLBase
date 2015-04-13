@@ -1,6 +1,6 @@
 {
   "name": "pxlbros/pxlbase",
-  "description": "pxlBase",
+  "description": "PXLBase",
   "autoload":
   {
     "psr-4":
