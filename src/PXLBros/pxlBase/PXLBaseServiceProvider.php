@@ -15,7 +15,7 @@ class PXLBaseServiceProvider extends \Illuminate\Support\ServiceProvider
 
 	    $this->publishes(
 	    [
-	        __DIR__ . '/path/to/views' => base_path('resources/views/vendor/pxlbros/pxlbase'),
+	        __DIR__ . '/../../resources/views' => base_path('resources/views/vendor/pxlbros/pxlbase'),
 	    ]);
 	}
 
@@ -36,9 +36,9 @@ class PXLBaseServiceProvider extends \Illuminate\Support\ServiceProvider
 
 	protected function registerServices()
 	{
-		$this->app->booting(function ($app)
+		$this->app->booting(function($app)
 		{
-			$app['modules']->register();
+			$app['pxlbase']->register();
 		});
 	}
 }
