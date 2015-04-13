@@ -89,11 +89,11 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		$this->ui = new UI();
 
-		if ( $this->ui->haveMessage() )
+		if ( $this->ui->haveNotification() )
 		{
-			$this->assign('core_message', $this->ui->getMessage(), 'js');
+			$this->assign('pxlbase_notification', $this->ui->getNotification(), 'js');
 
-			$this->ui->deleteMessage();
+			$this->ui->deleteNotification();
 		}
 
 		$this->is_ajax = (\Request::ajax() === TRUE);
