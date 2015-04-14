@@ -1,6 +1,6 @@
 <?php namespace PXLBros\PXLFramework;
 
-class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
+class PXLFrameworkServiceProvider extends \Laravel\Lumen\Routing\Controller
 {
 	protected $defer = false;
 

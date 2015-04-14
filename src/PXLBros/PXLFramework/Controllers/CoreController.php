@@ -4,10 +4,8 @@ use PXLBros\PXLFramework\Helpers\Ajax;
 use PXLBros\PXLFramework\Helpers\Str;
 use PXLBros\PXLFramework\Helpers\UI;
 
-abstract class CoreController extends \Illuminate\Routing\Controller
+abstract class CoreController extends \Laravel\Lumen\Routing\Controller
 {
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
-
 	const SECTION_ALL = 'all';
 	const SECTION_LAYOUT = 'layout';
 	const SECTION_CONTENT = 'content';
