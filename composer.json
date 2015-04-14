@@ -1,6 +1,6 @@
 {
   "name": "pxlbros/pxlframework",
-  "description": "PXLBase",
+  "description": "PXLFramework",
   "autoload":
   {
     "psr-4":
