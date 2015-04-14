@@ -1,4 +1,4 @@
-<?php namespace PXLBros\PXLBase\Helpers;
+<?php namespace PXLBros\PXLFramework\Helpers;
 
 class Str extends \Illuminate\Support\Str
 {

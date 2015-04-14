@@ -91,7 +91,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		if ( $this->ui->haveNotification() )
 		{
-			$this->assign('pxlbase_notification', $this->ui->getNotification(), 'js');
+			$this->assign('pxlframework_notification', $this->ui->getNotification(), 'js');
 
 			$this->ui->deleteNotification();
 		}
@@ -368,7 +368,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignCSS()
 	{
-		$css_html_view = view('pxlbase::layouts.partials.css');
+		$css_html_view = view('pxlframework::layouts.partials.css');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
 		$this->layout_view->css = $css_html_view->render();
@@ -376,7 +376,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignJQuery()
 	{
-		$jquery_view = view('pxlbase::layouts.partials.jquery');
+		$jquery_view = view('pxlframework::layouts.partials.jquery');
 		$jquery_view->base_url = $this->base_url;
 
 		$this->layout_view->jquery = $jquery_view->render();
@@ -384,7 +384,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignInlineJS()
 	{
-		$inline_js_view = view('pxlbase::layouts.partials.inline_js');
+		$inline_js_view = view('pxlframework::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
 		$this->layout_view->inline_js = $inline_js_view->render();
@@ -392,7 +392,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignJS()
 	{
-		$js_html_view = view('pxlbase::layouts.partials.js');
+		$js_html_view = view('pxlframework::layouts.partials.js');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
 		$this->layout_view->js = $js_html_view->render();

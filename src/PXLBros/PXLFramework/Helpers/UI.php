@@ -1,8 +1,8 @@
-<?php namespace PXLBros\PXLBase\Helpers;
+<?php namespace PXLBros\PXLFramework\Helpers;
 
 class UI
 {
-	const NOTIFICATION_SESSION_NAME = 'pxlbase_notification';
+	const NOTIFICATION_SESSION_NAME = 'pxlframework_notification';
 
 	const NOTIFICATION_TYPE_DEFAULT = 1;
 	const NOTIFICATION_TYPE_SUCCESS = 2;

@@ -1,5 +1,5 @@
 <?php
-$project_name = 'PXLBase';
+$project_name = 'PXLFramework';
 
 return
 [
