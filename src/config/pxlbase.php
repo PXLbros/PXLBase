@@ -1,9 +1,9 @@
 <?php
-define('PROJECT_NAME', 'pxlBase');
+$project_name = 'PXLBase';
 
 return
 [
-	'default_page_title' => PROJECT_NAME,
+	'default_page_title' => $project_name,
 	'page_title_separator' => '|',
-	'page_title_suffix' => PROJECT_NAME
+	'page_title_suffix' => $project_name
 ];
