@@ -368,18 +368,10 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignCSS()
 	{
-		$css_html_view = view('pxlframework::layouts.partials.css');
+		$css_html_view = view('pxlframework::layouts.partials.css_includes');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
-		$this->layout_view->css = $css_html_view->render();
-	}
-
-	private function assignJQuery()
-	{
-		$jquery_view = view('pxlframework::layouts.partials.jquery');
-		$jquery_view->base_url = $this->base_url;
-
-		$this->layout_view->jquery = $jquery_view->render();
+		$this->layout_view->css_includes = $css_html_view->render();
 	}
 
 	private function assignInlineJS()
@@ -392,10 +384,10 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignJS()
 	{
-		$js_html_view = view('pxlframework::layouts.partials.js');
+		$js_html_view = view('pxlframework::layouts.partials.js_includes');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
-		$this->layout_view->js = $js_html_view->render();
+		$this->layout_view->js_includes = $js_html_view->render();
 	}
 
 	public function beforeDisplay()
@@ -412,7 +404,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->includeContentData();
 
 		$this->assignCSS();
-		$this->assignJQuery();
 		$this->assignInlineJS();
 		$this->assignJS();
 
