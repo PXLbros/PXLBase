@@ -366,7 +366,15 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 	}
 
-	private function includejQuery()
+	private function assignCSS()
+	{
+		$css_html_view = view('pxlbase::layouts.partials.css');
+		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
+
+		return $css_html_view->render();
+	}
+
+	private function assignJQuery()
 	{
 		$jquery_view = view('pxlbase::layouts.partials.jquery');
 		$jquery_view->base_url = $this->base_url;
@@ -374,12 +382,20 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->layout_view->jquery = $jquery_view->render();
 	}
 
-	private function includeInlineJS()
+	private function assignInlineJS()
 	{
 		$inline_js_view = view('pxlbase::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
 		$this->layout_view->inline_js = $inline_js_view->render();
+	}
+
+	private function assignJS()
+	{
+		$js_html_view = view('pxlbase::layouts.partials.js');
+		$js_html_view->js_files = $this->assets[self::ASSET_JS];
+
+		return $js_html_view->render();
 	}
 
 	public function beforeDisplay()
@@ -395,8 +411,10 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->includeAssets($libraries, $css_files, $js_files);
 		$this->includeContentData();
 
-		$this->includejQuery();
-		$this->includeInlineJS();
+		$this->assignCSS();
+		$this->assignJQuery();
+		$this->assignInlineJS();
+		$this->assignJS();
 
 		if ( $view_file === NULL )
 		{
@@ -419,21 +437,5 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	public function getCurrentAction()
 	{
 		return $this->current_action['original'];
-	}
-
-	private function getCSSHTML()
-	{
-		$css_html_view = view('pxlbase::layouts.partials.css');
-		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
-
-		return $css_html_view->render();
-	}
-
-	private function getJSHTML()
-	{
-		$js_html_view = view('pxlbase::layouts.partials.js');
-		$js_html_view->js_files = $this->assets[self::ASSET_JS];
-
-		return $js_html_view->render();
 	}
 }
