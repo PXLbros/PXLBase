@@ -19,11 +19,7 @@ Then create a file `bower.json` with the following contents:
 	"name": "Project Name",
 	"dependencies":
 	{
-		"jquery": "latest",
-		"jquery-legacy": "jquery#1",
-		"normalize-css": "latest",
-		"sass-mediaqueries": "latest",
-		"sass-mixins": "latest"
+		"pxlcore": "latest"
 	}
 }
 ```
