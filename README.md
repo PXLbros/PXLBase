@@ -15,3 +15,13 @@ APP_DEBUG=true
 2. Add `pxlbros/pxlframework` to `composer.json` and run `composer update`
 3. Add service provider `PXLBros\PXLFramework\PXLFrameworkServiceProvider` to `app/bootstrap.php`
 4. Run `php artisan vendor:publish --provider="PXLBros\PXLFramework\PXLFrameworkServiceProvider"`  
+
+## Usage
+
+### Layout Variables
+
+`$page_title` - Page title
+`$css_includes` - <link>'s with included CSS-files
+`$js_includes` - <script>'s with included JS-files
+`$inline_js` - JS variables
+`$content` - Content

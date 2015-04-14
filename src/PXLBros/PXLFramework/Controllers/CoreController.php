@@ -341,8 +341,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		{
 			$this->layout_view->$key = $value;
 		}
-
-		$this->layout_view->assets = $this->assets;
 	}
 
 	private function getContentData()
