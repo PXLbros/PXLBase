@@ -6,8 +6,6 @@ class PXLBaseServiceProvider extends \Illuminate\Support\ServiceProvider
 
 	public function boot()
 	{
-		error_log('Boot me up');
-
 		$this->publishes(
 		[
 			__DIR__ . '/../../config/pxlbase.php' => config_path('pxlbase.php')
