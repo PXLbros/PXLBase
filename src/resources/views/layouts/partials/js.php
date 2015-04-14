@@ -1,4 +1,4 @@
-<?= $jquery . $inline_js ?>
+<?= $jquery ?>
 
 <?php foreach ( $js_files as $js_file ): ?>
 	<script src="<?= ($js_file['external'] === FALSE ? $base_url : '') . $js_file['path'] ?>"></script>
