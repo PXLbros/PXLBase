@@ -424,6 +424,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	private function getCSSHTML()
 	{
 		$css_html_view = view('pxlbase::layouts/partials/css');
+		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
 		return $css_html_view->render();
 	}
@@ -431,6 +432,12 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	private function getJSHTML()
 	{
 		$js_html_view = view('pxlbase::layouts/partials/js');
+
+		$js_html_view->jquery = '';
+
+		$js_html_view->inline_js = '';
+
+		$js_html_view->css_files = $this->assets[self::ASSET_JS];
 
 		return $js_html_view->render();
 	}
