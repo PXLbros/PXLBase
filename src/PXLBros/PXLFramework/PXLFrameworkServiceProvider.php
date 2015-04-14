@@ -8,7 +8,7 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		$this->publishes(
 		[
-			__DIR__ . '/../../config/pxlframework.php' => config_path('pxlframework.php')
+			__DIR__ . '/../../config/pxlframework.php' => base_path('config/pxlframework.php')
 		]);
 
 		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxlframework');
