@@ -368,7 +368,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function includejQuery()
 	{
-		$jquery_view = view('layouts/partials/jquery');
+		$jquery_view = view('pxlbase::layouts.partials.jquery');
 		$jquery_view->base_url = $this->base_url;
 
 		$this->layout_view->jquery = $jquery_view->render();
@@ -376,7 +376,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function includeInlineJS()
 	{
-		$inline_js_view = view('layouts/partials/inline_js');
+		$inline_js_view = view('pxlbase::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
 		$this->layout_view->inline_js = $inline_js_view->render();
@@ -435,18 +435,5 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
 		return $js_html_view->render();
-	}
-
-	private function getjQueryHTML()
-	{
-		return view('pxlbase::layouts.partials.jquery');
-	}
-
-	private function getInlineJSHTML()
-	{
-		$inline_js_view = view('pxlbase::layouts.partials.inline_js');
-		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
-
-		return $inline_js_view->render();
 	}
 }
