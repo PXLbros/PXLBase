@@ -1,8 +1,8 @@
-<?php namespace PXLBros\PXLBase\Controllers;
+<?php namespace PXLBros\PXLFramework\Controllers;
 
-use PXLBros\PXLBase\Helpers\Ajax;
-use PXLBros\PXLBase\Helpers\Str;
-use PXLBros\PXLBase\Helpers\UI;
+use PXLBros\PXLFramework\Helpers\Ajax;
+use PXLBros\PXLFramework\Helpers\Str;
+use PXLBros\PXLFramework\Helpers\UI;
 
 abstract class CoreController extends \Illuminate\Routing\Controller
 {
