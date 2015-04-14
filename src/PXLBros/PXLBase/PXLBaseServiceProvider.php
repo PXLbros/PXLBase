@@ -27,20 +27,10 @@ class PXLBaseServiceProvider extends \Illuminate\Support\ServiceProvider
 		(
 			__DIR__ . '/../../config/pxlbase.php', 'pxlbase'
 		);
-
-		$this->registerServices();
 	}
 
 	public function provides()
 	{
 		return ['pxlbase'];
-	}
-
-	protected function registerServices()
-	{
-		$this->app->booting(function($app)
-		{
-			$app['pxlbase']->register();
-		});
 	}
 }
