@@ -371,7 +371,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$css_html_view = view('pxlbase::layouts.partials.css');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
-		return $css_html_view->render();
+		$this->layout_view->css = $css_html_view->render();
 	}
 
 	private function assignJQuery()
@@ -395,7 +395,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$js_html_view = view('pxlbase::layouts.partials.js');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
-		return $js_html_view->render();
+		$this->layout_view->js = $js_html_view->render();
 	}
 
 	public function beforeDisplay()
