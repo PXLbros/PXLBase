@@ -342,7 +342,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		// Automatically load CSS & JS based off route
-		$css_short_auto_path = 'css/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
+		$css_short_auto_path = 'css/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
 		$css_auto_path = public_path() . '/' . $css_short_auto_path;
 
 		if ( file_exists($css_auto_path) )
@@ -350,7 +350,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$this->includeCSS($css_short_auto_path);
 		}
 
-		$js_short_auto_path = 'js/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
+		$js_short_auto_path = 'js/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
 		$js_auto_path = public_path() . '/' . $js_short_auto_path;
 
 		if ( file_exists($js_auto_path) )
@@ -460,7 +460,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		if ( $view_file === null )
 		{
-			$view_file = $this->current_controller['original'] . '/' . $this->current_action['underscore'];
+			$view_file = 'layouts.' . $this->current_controller['original'] . '.' . $this->current_action['underscore'];
 		}
 
 		return $this->layout_view->nest
