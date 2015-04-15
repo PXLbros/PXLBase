@@ -169,6 +169,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
     {
         $assign = function($section, $key, $value)
 		{
+			error_log($key . ' -> ' . $section);
+
             if ( isset($this->lib_view_data[$section][$key]) )
             {
                 throw new \Exception('Key "' . $key . '" already assiged.');
@@ -384,7 +386,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 	    foreach ( $this->lib_view_data[self::SECTION_LAYOUT] as $key => $value )
         {
-            $this->assignLibraryViewData($key, $value, self::SECTION_LAYOUT);
+            $this->layout_view->pxl[$key] = $value;
         }
 	}
 
@@ -417,7 +419,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$css_html_view = view('pxl::layouts.partials.css_includes');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
-		$this->assignLibraryViewData('css_inludes', $css_html_view->render(), self::SECTION_LAYOUT);
+		$this->layout_view->pxl['css_includes'] = $css_html_view->render();
 	}
 
 	private function assignInlineJS()
@@ -425,7 +427,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$inline_js_view = view('pxl::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
-		$this->assignLibraryViewData('inline_js', $inline_js_view->render(), self::SECTION_LAYOUT);
+		$this->layout_view->pxl['inline_js'] = $inline_js_view->render();
 	}
 
 	private function assignJS()
@@ -433,7 +435,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$js_html_view = view('pxl::layouts.partials.js_includes');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
-		$this->assignLibraryViewData('js_includes', $js_html_view->render(), self::SECTION_LAYOUT);
+		$this->layout_view->pxl['js_includes'] = $js_html_view->render();
 	}
 
 	public function beforeDisplay()
