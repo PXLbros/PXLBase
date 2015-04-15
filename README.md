@@ -20,8 +20,23 @@ APP_DEBUG=true
 
 ### Layout Variables
 
-`$page_title` - Page title
-`$css_includes` - <link>'s with included CSS-files
-`$js_includes` - <script>'s with included JS-files
-`$inline_js` - JS variables
-`$content` - Content
+#### $page_title
+Page title
+
+#### $meta_description
+Meta description
+
+#### $css_includes
+<link>'s with included CSS-files
+
+#### $js_includes
+<script>'s with included JS-files
+
+#### $inline_js
+JS variables
+
+#### $content
+Page content
+
+#### $current_page
+Unique identifier of current page

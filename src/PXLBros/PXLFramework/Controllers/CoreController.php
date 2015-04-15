@@ -33,12 +33,16 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	protected $is_ajax;
 	protected $ajax;
 
+	protected $page_id;
+
 	private $data =
 	[
 		self::SECTION_LAYOUT => [],
 		self::SECTION_CONTENT => [],
 		self::SECTION_JS => []
 	];
+
+	private $lib_view_data = [];
 
 	private $assets =
 	[
@@ -65,6 +69,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		$this->layout_view_filename = 'layouts/' . $this->layout;
+
 		$this->layout_view = view($this->layout_view_filename);
 
 		$current_controller = $this->getController();
@@ -87,14 +92,19 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->base_url = \URL::route('home', [], FALSE);
 		$this->assign('base_url', $this->base_url, [self::SECTION_LAYOUT, self::SECTION_JS]);
 
+		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
+
+		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
+		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_ALL);
+
 		$this->ui = new UI();
 
-		if ( $this->ui->haveNotification() )
+		/*if ( $this->ui->haveNotification() )
 		{
 			$this->assign('pxlframework_notification', $this->ui->getNotification(), 'js');
 
 			$this->ui->deleteNotification();
-		}
+		}*/
 
 		$this->is_ajax = (\Request::ajax() === TRUE);
 		$this->ajax = new Ajax($this->ui);
@@ -129,12 +139,12 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		$assign = function($section, $key, $value)
 		{
-			if ( isset($this->data[$section][$key]) )
-			{
-				throw new \Exception('Key "' . $key . '" already assiged.');
-			}
+            if ( isset($this->data[$section][$key]) )
+            {
+                throw new \Exception('Key "' . $key . '" already assiged.');
+            }
 
-			$this->data[$section][$key] = $value;
+            $this->data[$section][$key] = $value;
 		};
 
 		if ( $section === self::SECTION_ALL )
@@ -156,6 +166,38 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$assign($section, $key, $value);
 		}
 	}
+
+	private function assignLibraryViewData($key, $value, $section)
+    {
+        $assign = function($section, $key, $value)
+		{
+            if ( isset($this->lib_view_data[$section][$key]) )
+            {
+                throw new \Exception('Key "' . $key . '" already assiged.');
+            }
+
+            $this->lib_view_data[$section][$key] = $value;
+		};
+
+		if ( $section === self::SECTION_ALL )
+		{
+			$section = [self::SECTION_LAYOUT, self::SECTION_CONTENT, self::SECTION_JS];
+		}
+
+		if ( is_array($section) )
+		{
+			$sections = (array)$section;
+
+			foreach ( $sections as $section )
+			{
+				$assign($section, $key, $value);
+			}
+		}
+		else
+		{
+			$assign($section, $key, $value);
+		}
+    }
 
 	protected function addLibrary($library_name, $css_files = NULL, $js_files = NULL)
 	{
@@ -334,13 +376,18 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function includeContentData()
 	{
-		$this->assign('current_page', $this->current_page, self::SECTION_ALL);
-		$this->assign('page_id', $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page', self::SECTION_LAYOUT);
-
 		foreach ( $this->data[self::SECTION_LAYOUT] as $key => $value )
 		{
 			$this->layout_view->$key = $value;
 		}
+	}
+
+	private function includeLibraryViewData()
+	{
+	    foreach ( $this->lib_view_data[self::SECTION_LAYOUT] as $key => $value )
+        {
+		    $this->layout_view->pxlframework[$key] = $value;
+        }
 	}
 
 	private function getContentData()
@@ -369,7 +416,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$css_html_view = view('pxlframework::layouts.partials.css_includes');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
-		$this->layout_view->css_includes = $css_html_view->render();
+		$this->layout_view->pxlframework['css_includes'] = $css_html_view->render();
 	}
 
 	private function assignInlineJS()
@@ -377,7 +424,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$inline_js_view = view('pxlframework::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
-		$this->layout_view->inline_js = $inline_js_view->render();
+		$this->layout_view->pxlframework['inline_js'] = $inline_js_view->render();
 	}
 
 	private function assignJS()
@@ -385,7 +432,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$js_html_view = view('pxlframework::layouts.partials.js_includes');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
-		$this->layout_view->js_includes = $js_html_view->render();
+		$this->layout_view->pxlframework['js_includes'] = $js_html_view->render();
 	}
 
 	public function beforeDisplay()
@@ -396,9 +443,11 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		$this->beforeDisplay();
 
-		$this->layout_view->page_title = ($page_title !== NULL ? $this->generatePageTitle($page_title, $page_title_suffix) : \Config::get('custom.DEFAULT_PAGE_TITLE'));
+		$this->assignLibraryViewData('page_title', ($page_title !== NULL ? $this->generatePageTitle($page_title, $page_title_suffix) : \Config::get('custom.DEFAULT_PAGE_TITLE')), self::SECTION_LAYOUT);
 
 		$this->includeAssets($libraries, $css_files, $js_files);
+
+		$this->includeLibraryViewData();
 		$this->includeContentData();
 
 		$this->assignCSS();
