@@ -93,7 +93,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
-		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_LAYOUT);
+		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_ALL);
 		$this->assignLibraryViewData('base_url', $this->base_url, self::SECTION_ALL);
 
 		$this->ui = new UI();
@@ -105,7 +105,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$this->ui->deleteNotification();
 		}*/
 
-		$this->is_ajax = (\Request::ajax() === TRUE);
+		$this->is_ajax = (\Request::ajax() === true);
 		$this->ajax = new Ajax($this->ui);
 
 		// CSRF
@@ -114,6 +114,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->assign('csrf_token', $csrf_token, self::SECTION_CONTENT);
 		
 		$this->assignLibraryViewData('csrf_token', app('Illuminate\Encryption\Encrypter')->encrypt($csrf_token), self::SECTION_JS);
+
+		$this->assign('debug', env('APP_DEBUG'), self::SECTION_JS);
 
 		$this->afterLayoutInit();
 	}
