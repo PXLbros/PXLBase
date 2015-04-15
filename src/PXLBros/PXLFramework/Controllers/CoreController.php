@@ -417,6 +417,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	private function assignCSS()
 	{
 		$css_html_view = view('pxl::layouts.partials.css_includes');
+		$css_html_view->base_url = $this->base_url;
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
 		$this->layout_view->pxl['css_includes'] = $css_html_view->render();
@@ -433,6 +434,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	private function assignJS()
 	{
 		$js_html_view = view('pxl::layouts.partials.js_includes');
+		$js_html_view->base_url = $this->base_url;
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
 		$this->layout_view->pxl['js_includes'] = $js_html_view->render();
