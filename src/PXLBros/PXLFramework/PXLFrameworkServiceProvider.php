@@ -8,10 +8,10 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		$this->publishes(
 		[
-			__DIR__ . '/../../config/pxlframework.php' => config_path('pxlframework.php')
+			__DIR__ . '/../../config/pxl.php' => config_path('pxl.php')
 		]);
 
-		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxlframework');
+		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxl');
 
 	    $this->publishes(
 	    [
@@ -23,12 +23,12 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		$this->mergeConfigFrom
 		(
-			__DIR__ . '/../../config/pxlframework.php', 'pxlframework'
+			__DIR__ . '/../../config/pxlframework.php', 'pxl'
 		);
 	}
 
 	public function provides()
 	{
-		return ['pxlframework'];
+		return ['pxl'];
 	}
 }

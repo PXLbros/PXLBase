@@ -99,7 +99,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		/*if ( $this->ui->haveNotification() )
 		{
-			$this->assign('pxlframework_notification', $this->ui->getNotification(), 'js');
+			$this->assign('pxl_notification', $this->ui->getNotification(), 'js');
 
 			$this->ui->deleteNotification();
 		}*/
@@ -384,7 +384,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 	    foreach ( $this->lib_view_data[self::SECTION_LAYOUT] as $key => $value )
         {
-		    $this->layout_view->pxlframework[$key] = $value;
+            $this->assignLibraryViewData($key, $value, self::SECTION_LAYOUT);
         }
 	}
 
@@ -394,7 +394,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		(
 			$this->data[self::SECTION_CONTENT],
 			[
-			    'pxlframework' => $this->lib_view_data[self::SECTION_CONTENT],
+			    'pxl' => $this->lib_view_data[self::SECTION_CONTENT],
 			    'js_vars' => $this->data[self::SECTION_JS]
 			]
 		);
@@ -404,36 +404,36 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		if ( $page_title !== NULL )
 		{
-			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('pxlframework.page_title_separator') . ' ' . \Config::get('pxlframework.page_title_suffix') : ''));
+			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('pxl.page_title_separator') . ' ' . \Config::get('pxl.page_title_suffix') : ''));
 		}
 		else
 		{
-			return \Config::get('pxlframework.default_page_title');
+			return \Config::get('pxl.default_page_title');
 		}
 	}
 
 	private function assignCSS()
 	{
-		$css_html_view = view('pxlframework::layouts.partials.css_includes');
+		$css_html_view = view('pxl::layouts.partials.css_includes');
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
-		$this->layout_view->pxlframework['css_includes'] = $css_html_view->render();
+		$this->assignLibraryViewData('css_inludes', $css_html_view->render(), self::SECTION_LAYOUT);
 	}
 
 	private function assignInlineJS()
 	{
-		$inline_js_view = view('pxlframework::layouts.partials.inline_js');
+		$inline_js_view = view('pxl::layouts.partials.inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
-		$this->layout_view->pxlframework['inline_js'] = $inline_js_view->render();
+		$this->assignLibraryViewData('inline_js', $inline_js_view->render(), self::SECTION_LAYOUT);
 	}
 
 	private function assignJS()
 	{
-		$js_html_view = view('pxlframework::layouts.partials.js_includes');
+		$js_html_view = view('pxl::layouts.partials.js_includes');
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
-		$this->layout_view->pxlframework['js_includes'] = $js_html_view->render();
+		$this->assignLibraryViewData('js_includes', $js_html_view->render(), self::SECTION_LAYOUT);
 	}
 
 	public function beforeDisplay()
