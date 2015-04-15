@@ -23,7 +23,7 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		$this->mergeConfigFrom
 		(
-			__DIR__ . '/../../config/pxlframework.php', 'pxl'
+			__DIR__ . '/../../config/pxl.php', 'pxl'
 		);
 	}
 
