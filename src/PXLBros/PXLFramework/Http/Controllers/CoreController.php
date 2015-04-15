@@ -8,7 +8,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 {
 	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
-	const SHOW_DEBUG_INFO = true;
+	const SHOW_DEBUG_INFO = false;
 
 	const SECTION_ALL = 'all';
 	const SECTION_LAYOUT = 'layout';
