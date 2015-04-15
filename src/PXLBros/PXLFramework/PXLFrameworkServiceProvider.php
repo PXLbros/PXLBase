@@ -8,7 +8,10 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		$this->publishes(
 		[
-			__DIR__ . '/../../config/pxlframework.php' => config_path('pxlframework.php')
+			__DIR__ . '/../../config/pxlframework.php' => config_path('pxlframework.php'),
+			__DIR__ . '/../../assets.json' => base_path('assets.json'),
+			__DIR__ . '/../../package.json' => base_path('package.json'),
+			__DIR__ . '/../../gulpfile.js' => base_path('gulpfile.js'),
 		]);
 
 		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxlframework');
