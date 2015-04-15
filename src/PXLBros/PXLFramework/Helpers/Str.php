@@ -16,4 +16,9 @@ class Str extends \Illuminate\Support\Str
 	{
 		return strtolower(str_replace('-', '_', $str));
 	}
+
+	public static function slashToUnderscore($str)
+	{
+		return strtolower(str_replace('/', '_', $str));
+	}
 }

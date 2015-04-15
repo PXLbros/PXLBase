@@ -42,7 +42,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		self::SECTION_JS => []
 	];
 
-	private $lib_view_data = [];
+	private $library_view_data = [];
 
 	private $assets =
 	[
@@ -73,11 +73,12 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->layout_view = view($this->layout_view_filename);
 
 		$current_controller = $this->getController();
+		$current_controller_original = Str::hyphenToUnderscore($current_controller);
 
 		$this->current_controller =
 		[
-			'original' => $current_controller,
-			'underscore' => Str::hyphenToUnderscore($current_controller)
+			'original' => $current_controller_original,
+			'underscore' => Str::slashToUnderscore($current_controller_original)
 		];
 
 		$this->current_action =
@@ -92,7 +93,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
-		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_ALL);
+		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_LAYOUT);
 		$this->assignLibraryViewData('base_url', $this->base_url, self::SECTION_ALL);
 
 		$this->ui = new UI();
@@ -111,12 +112,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$csrf_token = csrf_token();
 
 		$this->assign('csrf_token', $csrf_token, self::SECTION_CONTENT);
-
-		$encrypter = app('Illuminate\Encryption\Encrypter');
-		$encrypted_csrf_token = $encrypter->encrypt($csrf_token);
-
-		$this->assign('csrf_token', $csrf_token, self::SECTION_JS);
-		$this->assign('encrypted_csrf_token', $encrypted_csrf_token, self::SECTION_JS);
+		
+		$this->assignLibraryViewData('csrf_token', app('Illuminate\Encryption\Encrypter')->encrypt($csrf_token), self::SECTION_JS);
 
 		$this->afterLayoutInit();
 	}
@@ -169,12 +166,12 @@ abstract class CoreController extends \Illuminate\Routing\Controller
     {
         $assign = function($section, $key, $value)
 		{
-            if ( isset($this->lib_view_data[$section][$key]) )
+            if ( isset($this->library_view_data[$section][$key]) )
             {
                 throw new \Exception('Key "' . $key . '" already assiged.');
             }
 
-            $this->lib_view_data[$section][$key] = $value;
+            $this->library_view_data[$section][$key] = $value;
 		};
 
 		if ( $section === self::SECTION_ALL )
@@ -343,7 +340,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		// Automatically load CSS & JS based off route
-		$css_short_auto_path = 'css/' . $this->current_controller['underscore'] . '/' . $this->current_action['underscore'] . '.css';
+		$css_short_auto_path = 'css/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
 		$css_auto_path = public_path() . '/' . $css_short_auto_path;
 
 		if ( file_exists($css_auto_path) )
@@ -351,7 +348,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$this->includeCSS($css_short_auto_path);
 		}
 
-		$js_short_auto_path = 'js/' . $this->current_controller['underscore'] . '/' . $this->current_action['underscore'] . '.js';
+		$js_short_auto_path = 'js/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
 		$js_auto_path = public_path() . '/' . $js_short_auto_path;
 
 		if ( file_exists($js_auto_path) )
@@ -382,10 +379,12 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function includeLibraryViewData()
 	{
-	    foreach ( $this->lib_view_data[self::SECTION_LAYOUT] as $key => $value )
+	    foreach ( $this->library_view_data[self::SECTION_LAYOUT] as $key => $value )
         {
             $this->layout_view->pxl[$key] = $value;
         }
+
+        $this->assign('pxl', $this->library_view_data[self::SECTION_JS], self::SECTION_JS);
 	}
 
 	private function getContentData()
@@ -394,7 +393,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		(
 			$this->data[self::SECTION_CONTENT],
 			[
-			    'pxl' => $this->lib_view_data[self::SECTION_CONTENT],
+			    'pxl' => $this->library_view_data[self::SECTION_CONTENT],
 			    'js_vars' => $this->data[self::SECTION_JS]
 			]
 		);
@@ -459,7 +458,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		if ( $view_file === NULL )
 		{
-			$view_file = $this->current_controller['underscore'] . '/' . $this->current_action['underscore'];
+			$view_file = $this->current_controller['original'] . '/' . $this->current_action['underscore'];
 		}
 
 		return $this->layout_view->nest
