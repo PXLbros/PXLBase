@@ -89,7 +89,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		];
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
-		$this->base_url = \URL::route('home', [], FALSE);
+		$this->base_url = \URL::route('home', [], false);
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
@@ -196,7 +196,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
     }
 
-	protected function addLibrary($library_name, $css_files = NULL, $js_files = NULL)
+	protected function addLibrary($library_name, $css_files = null, $js_files = null)
 	{
 		$this->libraries[$library_name] =
 		[
@@ -205,7 +205,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		];
 	}
 
-	protected function loadCSS($path, $external = FALSE)
+	protected function loadCSS($path, $external = false)
 	{
 		if ( \App::environment() === 'local' )
 		{
@@ -225,7 +225,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		];
 	}
 
-	protected function loadJS($path, $external = FALSE)
+	protected function loadJS($path, $external = false)
 	{
 		if ( \App::environment() === 'local' )
 		{
@@ -403,7 +403,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function generatePageTitle($page_title, $page_title_suffix)
 	{
-		if ( $page_title !== NULL )
+		if ( $page_title !== null )
 		{
 			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('pxl.page_title_separator') . ' ' . \Config::get('pxl.page_title_suffix') : ''));
 		}
@@ -443,7 +443,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 	}
 
-	public function display($page_title = NULL, $page_title_suffix = TRUE, array $libraries = [], array $css_files = [], array $js_files = [], $view_file = NULL)
+	public function display($page_title = null, $page_title_suffix = true, array $libraries = [], array $css_files = [], array $js_files = [], $view_file = null)
 	{
 		$this->beforeDisplay();
 
@@ -458,7 +458,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->assignInlineJS();
 		$this->assignJS();
 
-		if ( $view_file === NULL )
+		if ( $view_file === null )
 		{
 			$view_file = $this->current_controller['original'] . '/' . $this->current_action['underscore'];
 		}
