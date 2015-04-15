@@ -1,4 +1,4 @@
-<?php namespace PXLBros\PXLFramework\Controllers;
+<?php namespace PXLBros\PXLFramework\Http\Controllers;
 
 class ApplicationController extends CoreController
 {

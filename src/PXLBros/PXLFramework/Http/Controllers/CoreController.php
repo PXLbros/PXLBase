@@ -1,4 +1,4 @@
-<?php namespace PXLBros\PXLFramework\Controllers;
+<?php namespace PXLBros\PXLFramework\Http\Controllers;
 
 use PXLBros\PXLFramework\Helpers\Ajax;
 use PXLBros\PXLFramework\Helpers\Str;
