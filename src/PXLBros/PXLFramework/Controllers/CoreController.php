@@ -169,8 +169,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
     {
         $assign = function($section, $key, $value)
 		{
-			error_log($key . ' -> ' . $section);
-
             if ( isset($this->lib_view_data[$section][$key]) )
             {
                 throw new \Exception('Key "' . $key . '" already assiged.');
