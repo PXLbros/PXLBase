@@ -404,11 +404,11 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		if ( $page_title !== NULL )
 		{
-			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('custom.PAGE_TITLE_SEPARATOR') . ' ' . \Config::get('custom.PAGE_TITLE_SUFFIX') : ''));
+			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('pxlframework.page_title_separator') . ' ' . \Config::get('pxlframework.page_title_suffix') : ''));
 		}
 		else
 		{
-			return \Config::get('custom.DEFAULT_PAGE_TITLE');
+			return \Config::get('pxlframework.default_page_title');
 		}
 	}
 
@@ -444,7 +444,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		$this->beforeDisplay();
 
-		$this->assignLibraryViewData('page_title', ($page_title !== NULL ? $this->generatePageTitle($page_title, $page_title_suffix) : \Config::get('custom.DEFAULT_PAGE_TITLE')), self::SECTION_LAYOUT);
+		$this->assignLibraryViewData('page_title', $this->generatePageTitle($page_title, $page_title_suffix), self::SECTION_LAYOUT);
 
 		$this->includeAssets($libraries, $css_files, $js_files);
 
