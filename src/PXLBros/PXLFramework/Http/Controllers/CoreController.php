@@ -8,8 +8,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 {
 	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
-	protected $show_debug_info = false;
-
 	const SECTION_ALL = 'all';
 	const SECTION_LAYOUT = 'layout';
 	const SECTION_CONTENT = 'content';
@@ -94,7 +92,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->base_url = \URL::route('home', [], false);
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
-		if ( $this->show_debug_info === true && !\App::environment('production') )
+		if ( \Config::get('pxl.show_debug_info') === true && !\App::environment('production') )
 		{
 			$debug_info_view = view('pxl::layouts.partials.debug_info');
 			$debug_info_view->current_page = $this->current_page;
