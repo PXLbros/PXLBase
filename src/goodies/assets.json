@@ -1,0 +1,25 @@
+{
+  "libraries":
+  {
+    "pxlcore":
+    {
+      "css": "libs/bower/pxlcore/dist/pxlcore.min.css",
+      "js": "libs/bower/pxlcore/dist/pxlcore.min.js"
+    },
+    "normalize-css":
+    {
+        "css": "libs/bower/normalize-css/normalize.css"
+    }
+  },
+  "pages":
+  {
+    "front":
+    {
+      "libraries":
+      [
+        "normalize-css",
+        "pxlcore"
+      ]
+    }
+  }
+}
