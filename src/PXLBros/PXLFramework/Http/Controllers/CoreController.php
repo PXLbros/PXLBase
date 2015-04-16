@@ -476,22 +476,22 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$view_file = 'layouts.' . $this->current_controller['original'] . '.' . $this->current_action['underscore'];
 		}
 
-		if ( \Config::get('pxl.show_debug_info') === true && !\App::environment('production') )
+		if ( \Config::get('pxl.show_debug') === true && !\App::environment('production') )
 		{
-			$debug_info_view = view('pxl::layouts.partials.debug_info');
-			$debug_info_view->current_controller = print_r($this->current_controller, true);
-			$debug_info_view->current_action = print_r($this->current_action, true);
-			$debug_info_view->current_page = $this->current_page;
-			$debug_info_view->js_layout_path = $this->js_layout_path;
-			$debug_info_view->js_auto_path = $this->js_auto_path;
-			$debug_info_view->css_layout_path = $this->css_layout_path;
-			$debug_info_view->css_auto_path = $this->css_auto_path;
-			$debug_info_view->css_files = print_r($this->assets[self::ASSET_CSS], true);
-			$debug_info_view->js_files = print_r($this->assets[self::ASSET_JS], true);
-			$debug_info_view->inline_js_variables = print_r($this->data[self::ASSET_JS], true);
-			$debug_info_view->loaded_libraries = print_r($this->loaded_libraries, true);
+			$debug_view = view('pxl::layouts.partials.debug');
+			$debug_view->current_controller = print_r($this->current_controller, true);
+			$debug_view->current_action = print_r($this->current_action, true);
+			$debug_view->current_page = $this->current_page;
+			$debug_view->js_layout_path = $this->js_layout_path;
+			$debug_view->js_auto_path = $this->js_auto_path;
+			$debug_view->css_layout_path = $this->css_layout_path;
+			$debug_view->css_auto_path = $this->css_auto_path;
+			$debug_view->css_files = print_r($this->assets[self::ASSET_CSS], true);
+			$debug_view->js_files = print_r($this->assets[self::ASSET_JS], true);
+			$debug_view->inline_js_variables = print_r($this->data[self::ASSET_JS], true);
+			$debug_view->loaded_libraries = print_r($this->loaded_libraries, true);
 
-			return $debug_info_view->render();
+			return $debug_view->render();
 		}
 		else
 		{

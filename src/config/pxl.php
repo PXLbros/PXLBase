@@ -3,7 +3,7 @@ $project_name = 'PXLFramework';
 
 return
 [
-	'show_debug_info' => false,
+	'show_debug' => false,
 
 	'default_page_title' => $project_name,
 	'page_title_separator' => '|',
