@@ -476,7 +476,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$view_file = 'layouts.' . $this->current_controller['original'] . '.' . $this->current_action['underscore'];
 		}
 
-		if ( \Config::get('pxl.show_debug') === true && !\App::environment('production') )
+		if ( \Config::get('pxl.show_debug') === true )
 		{
 			$debug_view = view('pxl::layouts.partials.debug');
 			$debug_view->current_controller = print_r($this->current_controller, true);
