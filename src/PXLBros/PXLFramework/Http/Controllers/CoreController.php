@@ -22,6 +22,16 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	private $layout_view_filename;
 	private $layout_view;
 
+	private $js_layout_filename;
+	private $js_layout_path;
+	private $js_short_auto_path;
+	private $js_auto_path;
+
+	private $css_layout_filename;
+	private $css_layout_path;
+	private $css_short_auto_path;
+	private $css_auto_path;
+
 	protected $current_controller = [];
 	protected $current_action = [];
 	protected $current_page;
@@ -69,7 +79,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		$this->layout_view_filename = 'layouts/' . $this->layout;
-
 		$this->layout_view = view($this->layout_view_filename);
 
 		$current_controller = $this->getController();
@@ -87,18 +96,20 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			'underscore' => Str::camelCaseToUnderscore($method),
 			'hyphen' => Str::camelCaseToHyphen($method)
 		];
+		
+		$this->js_layout_filename = 'js/' . str_replace('.', '/', $this->layout_view->getName()) . '.js';
+		$this->js_layout_path = public_path() . '/' . $this->js_layout_filename;
+		$this->js_short_auto_path = 'js/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
+		$this->js_auto_path = public_path() . '/' . $this->js_short_auto_path;
+		
+		$this->css_layout_filename = 'css/' . str_replace('.', '/', $this->layout_view->getName()) . '.css';
+		$this->css_layout_path = public_path() . '/' . $this->css_layout_filename;
+		$this->css_short_auto_path = 'css/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
+		$this->css_auto_path = public_path() . '/' . $this->css_short_auto_path;
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
 		$this->base_url = \URL::route('home', [], false);
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
-
-		if ( \Config::get('pxl.show_debug_info') === true && !\App::environment('production') )
-		{
-			$debug_info_view = view('pxl::layouts.partials.debug_info');
-			$debug_info_view->current_page = $this->current_page;
-
-			die($debug_info_view->render());
-		}
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
 		$this->assignLibraryViewData('page_id', $this->page_id, self::SECTION_ALL);
@@ -333,37 +344,31 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 
 		// Auto load layout CSS & JS
-		$css_layout_filename = 'css/' . str_replace('.', '/', $this->layout_view->getName()) . '.css';
-		$css_layout_path = public_path() . '/' . $css_layout_filename;
-
-		if ( file_exists($css_layout_path) )
+		if ( file_exists($this->css_layout_path) )
 		{
-			$this->loadCSS($css_layout_filename);
+			$this->loadCSS($this->css_layout_filename);
 		}
 
-		$js_layout_filename = 'js/' . str_replace('.', '/', $this->layout_view->getName()) . '.js';
-		$js_layout_path = public_path() . '/' . $js_layout_filename;
+		//$js_layout_filename = 'js/' . str_replace('.', '/', $this->layout_view->getName()) . '.js';
+		//$js_layout_path = public_path() . '/' . $js_layout_filename;
 
-		if ( file_exists($js_layout_path) )
+		if ( file_exists($this->js_layout_path) )
 		{
-			$this->loadJS($js_layout_filename);
+			$this->loadJS($this->js_layout_filename);
 		}
 
 		// Automatically load CSS & JS based off route
-		$css_short_auto_path = 'css/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
-		$css_auto_path = public_path() . '/' . $css_short_auto_path;
-
-		if ( file_exists($css_auto_path) )
+		if ( file_exists($this->css_auto_path) )
 		{
-			$this->includeCSS($css_short_auto_path);
+			$this->includeCSS($this->css_short_auto_path);
 		}
 
 		$js_short_auto_path = 'js/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
 		$js_auto_path = public_path() . '/' . $js_short_auto_path;
 
-		if ( file_exists($js_auto_path) )
+		if ( file_exists($this->js_auto_path) )
 		{
-			$this->includeJS($js_short_auto_path);
+			$this->includeJS($this->js_short_auto_path);
 		}
 
 		// CSS loaded from display() function
@@ -471,12 +476,32 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$view_file = 'layouts.' . $this->current_controller['original'] . '.' . $this->current_action['underscore'];
 		}
 
-		return $this->layout_view->nest
-		(
-			'content',
-			$view_file,
-			$this->getContentData()
-		);
+		if ( \Config::get('pxl.show_debug_info') === true && !\App::environment('production') )
+		{
+			$debug_info_view = view('pxl::layouts.partials.debug_info');
+			$debug_info_view->current_controller = print_r($this->current_controller, true);
+			$debug_info_view->current_action = print_r($this->current_action, true);
+			$debug_info_view->current_page = $this->current_page;
+			$debug_info_view->js_layout_path = $this->js_layout_path;
+			$debug_info_view->js_auto_path = $this->js_auto_path;
+			$debug_info_view->css_layout_path = $this->css_layout_path;
+			$debug_info_view->css_auto_path = $this->css_auto_path;
+			$debug_info_view->css_files = print_r($this->assets[self::ASSET_CSS], true);
+			$debug_info_view->js_files = print_r($this->assets[self::ASSET_JS], true);
+			$debug_info_view->inline_js_variables = print_r($this->data[self::ASSET_JS], true);
+			$debug_info_view->loaded_libraries = print_r($this->loaded_libraries, true);
+
+			return $debug_info_view->render();
+		}
+		else
+		{
+			return $this->layout_view->nest
+			(
+				'content',
+				$view_file,
+				$this->getContentData()
+			);
+		}
 	}
 
 	public function getCurrentController()

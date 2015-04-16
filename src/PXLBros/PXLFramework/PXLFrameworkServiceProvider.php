@@ -13,10 +13,10 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 
 		$this->loadViewsFrom(__DIR__ . '/../../resources/views', 'pxl');
 
-	    $this->publishes(
+	    /*$this->publishes(
 	    [
 	        __DIR__ . '/../../resources/views' => base_path('resources/views/vendor/pxlbros/pxlframework'),
-	    ]);
+	    ]);*/
 
 	    $this->publishes(
 	    [
