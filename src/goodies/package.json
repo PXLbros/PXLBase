@@ -12,6 +12,7 @@
     "gulp-imagemin": "*",
     "gulp-rename": "*",
     "gulp-if": "*",
-    "gulp-scss-lint": "*"
+    "gulp-scss-lint": "*",
+    "gulp-cached": "*"
   }
 }

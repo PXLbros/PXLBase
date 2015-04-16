@@ -13,7 +13,8 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	rename = require('gulp-rename'),
 	gulpif = require('gulp-if'),
-	scsslint = require('gulp-scss-lint');
+	scsslint = require('gulp-scss-lint'),
+	cache = require('gulp-cached');
 
 var PUBLIC_DIR = 'public/',
 	RESOURCES_DIR = 'resources/',
@@ -44,7 +45,8 @@ gulp.task('compass', function()
 
 gulp.task('scss-lint', function()
 {
-	gulp.src(SASS_DIR + '**/*.scss')
+    gulp.src(SASS_DIR + '**/*.scss')
+		.pipe(cache('scsslint'))
 		.pipe(scsslint(
 		{
 			config: 'scss_lint.yml'
