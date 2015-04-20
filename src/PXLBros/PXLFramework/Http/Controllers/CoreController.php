@@ -67,6 +67,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		self::LIBRARY_LOAD_PRIORITY_POST => []
 	];
 
+	protected $user;
+
 	public function afterLayoutInit()
 	{
 	}
