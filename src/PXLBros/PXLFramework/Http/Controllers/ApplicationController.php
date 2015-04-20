@@ -18,11 +18,11 @@ class ApplicationController extends CoreController
 
 	public function filterRequests($route, $request)
 	{
-		$user = \Auth::user();
+		$this->user = \Auth::user();
 
 		$this->assign('user', $this->user, [self::SECTION_LAYOUT, self::SECTION_CONTENT]);
 
-		if ( $this->auth_required === true && $user === null && $route->getActionName() !== $this->sign_in_route_full )
+		if ( $this->auth_required === true && $this->user === null && $route->getActionName() !== $this->sign_in_route_full )
 		{
 			return \Redirect::route($this->sign_in_route);
 		}
