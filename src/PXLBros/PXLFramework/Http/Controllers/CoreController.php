@@ -353,9 +353,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 			$this->loadCSS($this->css_layout_filename);
 		}
 
-		//$js_layout_filename = 'js/' . str_replace('.', '/', $this->layout_view->getName()) . '.js';
-		//$js_layout_path = public_path() . '/' . $js_layout_filename;
-
 		if ( file_exists($this->js_layout_path) )
 		{
 			$this->loadJS($this->js_layout_filename);
@@ -366,9 +363,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		{
 			$this->includeCSS($this->css_short_auto_path);
 		}
-
-		$js_short_auto_path = 'js/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
-		$js_auto_path = public_path() . '/' . $js_short_auto_path;
 
 		if ( file_exists($this->js_auto_path) )
 		{

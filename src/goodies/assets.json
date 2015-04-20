@@ -3,12 +3,25 @@
   {
     "pxlcore":
     {
-      "css": "libs/bower/pxlcore/dist/pxlcore.min.css",
-      "js": "libs/bower/pxlcore/dist/pxlcore.min.js"
+      "css": "libs/bower/pxlcore/dist/pxlcore.css",
+      "js": "libs/bower/pxlcore/dist/pxlcore.js"
     },
     "normalize-css":
     {
-        "css": "libs/bower/normalize-css/normalize.css"
+      "css": "libs/bower/normalize-css/normalize.css"
+    },
+    "semantic-ui":
+    {
+      "css": "libs/bower/semantic-ui/dist/semantic.css",
+      "js": "libs/bower/semantic-ui/dist/semantic.js"
+    },
+    "livestampjs":
+    {
+      "js":
+      [
+        "libs/bower/moment/moment.js",
+        "libs/bower/livestampjs/livestamp.min.js"
+      ]
     }
   },
   "pages":
@@ -18,6 +31,16 @@
       "libraries":
       [
         "normalize-css",
+        "pxlcore"
+      ]
+    },
+    "dashboard":
+    {
+      "libraries":
+      [
+        "normalize-css",
+        "semantic-ui",
+        "livestampjs",
         "pxlcore"
       ]
     }

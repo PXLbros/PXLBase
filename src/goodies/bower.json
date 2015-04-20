@@ -1,0 +1,12 @@
+{
+  "name": "pxlFramework",
+  "dependencies":
+  {
+    "jquery": "latest",
+	"jquery-legacy": "jquery#1",
+    "pxlcore": "latest",
+    "semantic-ui": "latest",
+    "moment": "latest",
+    "livestampjs": "latest"
+  }
+}
