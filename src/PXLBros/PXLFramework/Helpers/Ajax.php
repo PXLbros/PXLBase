@@ -21,11 +21,11 @@ class Ajax
 		$this->data_keys = array_keys($this->data);
 	}
 
-	public function addData($key, $value)
+	public function assign($key, $value)
 	{
 		if ( in_array($key, $this->data_keys) )
 		{
-			throw new \Exception('Can\'t add data with key "' . $key . '" because it\'s a restricted keyword.');
+			throw new \Exception('Key "' . $key . '" is a restricted keyword.');
 		}
 
 		$this->data['data'][$key] = $value;
