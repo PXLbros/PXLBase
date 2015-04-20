@@ -6,6 +6,28 @@ class ApplicationController extends CoreController
 	private $_current_controller_parts;
 	private $_current_action;
 
+	protected $sign_in_route_full = 'App\Http\Controllers\Dashboard\AuthController@signIn';
+	protected $sign_in_route = 'sign-in';
+
+	protected $auth_required = false;
+
+	function __construct()
+	{
+		$this->beforeFilter('@filterRequests', ['on' => 'get']);
+	}
+
+	public function filterRequests($route, $request)
+	{
+		$user = \Auth::user();
+
+		$this->assign('user', $this->user, [self::SECTION_LAYOUT, self::SECTION_CONTENT]);
+
+		if ( $this->auth_required === true && $user === null && $route->getActionName() !== $this->sign_in_route_full )
+		{
+			return \Redirect::route($this->sign_in_route);
+		}
+	}
+
 	public function callAction($method, $parameters)
 	{
 		parent::initLayout($method, $parameters);
