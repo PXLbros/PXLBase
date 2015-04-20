@@ -420,11 +420,13 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function generatePageTitle($page_title, $page_title_suffix)
 	{
-		if ( $page_title !== null )
+	    $num_page_title_parts = count($this->page_title_parts);
+
+		if ( $page_title !== null || $num_page_title_parts > 0 )
 		{
 		    $page_title_separator = \Config::get('pxl.page_title_separator');
 
-			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : $page_title) . (count($this->page_title_parts) > 0 ? implode(' ' . $page_title_separator . ' ', $this->page_title_parts) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
+			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : ($page_title !== null ? $page_title : '')) . ($num_page_title_parts > 0 ? ($page_title !== null ? ' ' . $page_title_separator . ' ' : '') . implode(' ' . $page_title_separator . ' ', $this->page_title_parts) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
 		}
 		else
 		{
