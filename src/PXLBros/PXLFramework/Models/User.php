@@ -1,9 +1,13 @@
 <?php namespace PXLBros\PXLFramework\Models;
 
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Model
+class User extends Model implements AuthenticatableContract
 {
+	use Authenticatable;
+
 	protected $table = 'users';
 
 	public static function register($email, $first_name, $last_name, $password = null)
