@@ -8,7 +8,6 @@ class DashboardController extends ApplicationController
 
 	public function afterLayoutInit()
 	{
-		$this->initMenu();
 		$this->initBreadcrumb();
 
 		parent::afterLayoutInit();
@@ -23,27 +22,6 @@ class DashboardController extends ApplicationController
 		$this->assign('breadcrumb', $breadcrumb_view->render(), self::SECTION_LAYOUT);
 
 		parent::beforeDisplay();
-	}
-
-	private function initMenu()
-	{
-		$menu_items =
-		[
-			[
-				'text' => 'Dashboard',
-				'icon' => 'dashboard',
-				'link' => \URL::route('dashboard'),
-				'pages' => ['dashboard/home/home']
-			],
-			[
-				'text' => 'Users',
-				'icon' => 'user',
-				'link' => \URL::route('dashboard/users'),
-				'pages' => ['dashboard/users/users', 'dashboard/users/user']
-			]
-		];
-
-		$this->assign('menu_items', $menu_items, self::SECTION_LAYOUT);
 	}
 
 	private function initBreadcrumb()
