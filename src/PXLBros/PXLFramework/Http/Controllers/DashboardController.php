@@ -6,6 +6,8 @@ class DashboardController extends ApplicationController
 
 	private $breadcrumb_items = [];
 
+	protected $sign_in_route = 'App\Http\Controllers\Dashboard\AuthController@signIn';
+
 	function __construct()
 	{
 		$this->beforeFilter('@filterRequests', ['on' => 'get']);
@@ -15,7 +17,7 @@ class DashboardController extends ApplicationController
 	{
 		$user = \Auth::user();
 
-		if ( $user === NULL && $route->getActionName() !== 'App\Http\Controllers\Dashboard\AuthController@signIn' )
+		if ( $user === NULL && $route->getActionName() !== $this->sign_in_route )
 		{
 			return \Redirect::route('sign-in');
 		}
