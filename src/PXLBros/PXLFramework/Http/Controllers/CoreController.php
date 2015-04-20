@@ -45,6 +45,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	protected $page_id;
 
+	private $page_title_parts = [];
+
 	private $data =
 	[
 		self::SECTION_LAYOUT => [],
@@ -420,7 +422,9 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		if ( $page_title !== null )
 		{
-			return ((is_array($page_title) ? implode(' | ', $page_title) : $page_title) . ($page_title_suffix ? ' ' . \Config::get('pxl.page_title_separator') . ' ' . \Config::get('pxl.page_title_suffix') : ''));
+		    $page_title_separator = \Config::get('pxl.page_title_separator');
+
+			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : $page_title) . (count($this->page_title_parts) > 0 ? implode(' ' . $page_title_separator . ' ', $this->page_title_parts) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
 		}
 		else
 		{
@@ -515,4 +519,14 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 		return $this->current_action['original'];
 	}
+
+	protected function setPageTitleParts($page_title_parts)
+    {
+        $this->page_title_parts = (is_array($page_title_parts) ? $page_title_parts : [$page_title_parts]);
+    }
+
+    protected function addPageTitlePart($page_title_part)
+    {
+        $this->page_title_parts[] = $page_title_part;
+    }
 }
