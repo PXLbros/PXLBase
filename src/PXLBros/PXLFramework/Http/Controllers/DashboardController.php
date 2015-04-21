@@ -8,6 +8,8 @@ class DashboardController extends ApplicationController
 
 	public function afterLayoutInit()
 	{
+		$this->setPageTitleParts('Dashboard');
+
 		$this->initBreadcrumb();
 
 		parent::afterLayoutInit();
@@ -15,8 +17,6 @@ class DashboardController extends ApplicationController
 
 	public function beforeDisplay()
 	{
-		$this->setPageTitleParts('Dashboard');
-
 		$breadcrumb_view = view('pxl::layouts/dashboard/partials/breadcrumb');
 		$breadcrumb_view->breadcrumb_items = $this->breadcrumb_items;
 		$breadcrumb_view->num_breadcrumb_items = count($this->breadcrumb_items);

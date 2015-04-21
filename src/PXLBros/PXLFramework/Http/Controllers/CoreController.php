@@ -420,7 +420,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		{
 		    $page_title_separator = \Config::get('pxl.page_title_separator');
 
-			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : ($page_title !== null ? $page_title : '')) . ($num_page_title_parts > 0 ? ($page_title !== null ? ' ' . $page_title_separator . ' ' : '') . implode(' ' . $page_title_separator . ' ', $this->page_title_parts) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
+			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : ($page_title !== null ? $page_title : '')) . ($num_page_title_parts > 0 ? ($page_title !== null ? ' ' . $page_title_separator . ' ' : '') . implode(' ' . $page_title_separator . ' ', array_reverse($this->page_title_parts)) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
 		}
 		else
 		{
