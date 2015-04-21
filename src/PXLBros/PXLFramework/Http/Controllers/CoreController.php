@@ -112,7 +112,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->css_auto_path = public_path() . '/' . $this->css_short_auto_path;
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
-		$this->base_url = route('home', [], false);
+		$this->base_url = \Request::root() . '/';
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);
@@ -132,11 +132,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->ajax = new Ajax($this->ui);
 
 		// CSRF
-		$csrf_token = csrf_token();
-
-		$this->assign('csrf_token', $csrf_token, self::SECTION_CONTENT);
-		
-		$this->assignLibraryViewData('csrf_token', app('Illuminate\Encryption\Encrypter')->encrypt($csrf_token), self::SECTION_JS);
+		$this->assignLibraryViewData('csrf_token', app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()), [self::SECTION_CONTENT, self::SECTION_JS]);
 
 		$this->assign('debug', env('APP_DEBUG'), self::SECTION_JS);
 
