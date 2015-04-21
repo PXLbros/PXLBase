@@ -2,7 +2,7 @@
 
 class UI
 {
-	const NOTIFICATION_SESSION_NAME = 'pxlframework_notification';
+	const NOTIFICATION_SESSION_NAME = 'pxl_notification';
 
 	const NOTIFICATION_TYPE_DEFAULT = 1;
 	const NOTIFICATION_TYPE_SUCCESS = 2;
