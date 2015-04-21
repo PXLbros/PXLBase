@@ -112,7 +112,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->css_auto_path = public_path() . '/' . $this->css_short_auto_path;
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
-		$this->base_url = \URL::route('home', [], false);
+		$this->base_url = route('home', [], false);
 		$this->page_id = $this->current_controller['underscore'] . '_' . $this->current_action['underscore'] . '_page';
 
 		$this->assignLibraryViewData('current_page', $this->current_page, self::SECTION_ALL);

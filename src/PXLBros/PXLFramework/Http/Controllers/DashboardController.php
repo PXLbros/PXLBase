@@ -30,7 +30,7 @@ class DashboardController extends ApplicationController
 	{
 		if ( $this->current_page !== 'dashboard/home/home' )
 		{
-			$this->addBreadcrumbItem('Dashboard', \URL::route('dashboard'));
+			$this->addBreadcrumbItem('Dashboard', route('dashboard'));
 		}
 	}
 
