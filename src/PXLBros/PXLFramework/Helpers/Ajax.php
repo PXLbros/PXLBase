@@ -8,7 +8,7 @@ class Ajax
 	[
 		'data' => [],
 		'redirect' => NULL,
-		'message' => NULL,
+		'notification' => NULL,
 		'error' => NULL
 	];
 
@@ -49,28 +49,28 @@ class Ajax
 
 	public function showSuccess($text)
 	{
-		$this->data['message'] =
+		$this->data['notification'] =
 		[
 			'text' => $text,
-			'type' => UI::MESSAGE_TYPE_SUCCESS
+			'type' => UI::NOTIFICATION_TYPE_SUCCESS
 		];
 	}
 
 	public function showInfo($text)
 	{
-		$this->data['message'] =
+		$this->data['notification'] =
 		[
 			'text' => $text,
-			'type' => UI::MESSAGE_TYPE_INFO
+			'type' => UI::NOTIFICATION_TYPE_INFO
 		];
 	}
 
 	public function showWarning($text)
 	{
-		$this->data['message'] =
+		$this->data['notification'] =
 		[
 			'text' => $text,
-			'type' => UI::MESSAGE_TYPE_WARNING
+			'type' => UI::NOTIFICATION_TYPE_WARNING
 		];
 	}
 
@@ -79,7 +79,7 @@ class Ajax
 		$this->data['message'] =
 		[
 			'text' => $text,
-			'type' => UI::MESSAGE_TYPE_ERROR
+			'type' => UI::NOTIFICATION_TYPE_ERROR
 		];
 	}
 
@@ -87,11 +87,11 @@ class Ajax
 	{
 		ob_start();
 
-		if ( $this->data['redirect'] !== NULL && $this->data['message'] !== NULL )
+		if ( $this->data['redirect'] !== NULL && $this->data['notification'] !== NULL )
 		{
-			$this->ui->setMessage($this->data['message']['text'], $this->data['message']['type']);
+			$this->ui->setNotification($this->data['notification']['text'], $this->data['notification']['type']);
 
-			$this->data['message'] = NULL;
+			$this->data['notification'] = NULL;
 		}
 
 		$response = \Response::json($this->data);
