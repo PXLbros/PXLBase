@@ -76,7 +76,7 @@ class Ajax
 
 	public function showError($text)
 	{
-		$this->data['message'] =
+		$this->data['notification'] =
 		[
 			'text' => $text,
 			'type' => UI::NOTIFICATION_TYPE_ERROR
@@ -104,9 +104,14 @@ class Ajax
 		return $response;
 	}
 
-	public function outputWithError($error)
+	public function outputWithError($error, $show_notification = false)
 	{
 		$this->setError($error);
+
+		if ( $show_notification === true )
+		{
+			$this->showError($error);
+		}
 
 		return $this->output();
 	}

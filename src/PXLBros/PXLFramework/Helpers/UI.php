@@ -4,11 +4,10 @@ class UI
 {
 	const NOTIFICATION_SESSION_NAME = 'pxl_notification';
 
-	const NOTIFICATION_TYPE_DEFAULT = 1;
-	const NOTIFICATION_TYPE_SUCCESS = 2;
-	const NOTIFICATION_TYPE_INFO = 3;
-	const NOTIFICATION_TYPE_WARNING = 4;
-	const NOTIFICATION_TYPE_ERROR = 5;
+	const NOTIFICATION_TYPE_SUCCESS = 1;
+	const NOTIFICATION_TYPE_INFO = 2;
+	const NOTIFICATION_TYPE_WARNING = 3;
+	const NOTIFICATION_TYPE_ERROR = 4;
 
 	private $notification =
 	[
@@ -16,7 +15,7 @@ class UI
 		'user_loaded' => NULL
 	];
 
-	public function setNotification($text, $type = self::NOTIFICATION_TYPE_DEFAULT)
+	public function setNotification($text, $type)
 	{
 		$this->notification['user_loaded'] =
 		[
@@ -25,11 +24,6 @@ class UI
 		];
 
 		$this->saveNotification();
-	}
-
-	public function showNotification($text)
-	{
-		$this->setNotification($text, self::NOTIFICATION_TYPE_DEFAULT);
 	}
 
 	public function showSuccess($text)
