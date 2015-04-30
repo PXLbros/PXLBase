@@ -4,7 +4,7 @@
 	<?php endif ?>
 <?php endforeach ?>
 
-<?php foreach ( $delayed_js_files as $js_file ): ?>
+<?php foreach ( $js_files as $js_file ): ?>
 	<?php if ( $js_file['delayed'] === true ): ?>
 		<script src="<?= ($js_file['external'] === FALSE ? $base_url : '') . $js_file['path'] ?>"></script>
 	<?php endif ?>
