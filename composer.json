@@ -7,6 +7,6 @@
     {
       "PXLBros\\PXLFramework\\": "src/PXLBros/PXLFramework/"
     }
-  },
+ },
   "minimum-stability": "dev"
 }
