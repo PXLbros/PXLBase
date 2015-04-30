@@ -224,9 +224,9 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		];
 	}
 
-	protected function loadCSS($path, $external = false)
+	protected function loadCSS($path, $external = FALSE, $delayed = false)
 	{
-		if ( \App::environment() === 'local' )
+		if ( $delayed && \App::environment() === 'local' )
 		{
 			foreach ( $this->assets[self::ASSET_CSS] as $css_file )
 			{
@@ -240,13 +240,14 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->assets[self::ASSET_CSS][] =
 		[
 			'path' => $path,
-			'external' => $external
+			'external' => $external,
+			'delayed' => $delayed
 		];
 	}
 
-	protected function loadJS($path, $external = false)
+	protected function loadJS($path, $external = false, $delayed = false)
 	{
-		if ( \App::environment() === 'local' )
+		if ( $delayed && \App::environment() === 'local' )
 		{
 			foreach ( $this->assets[self::ASSET_JS] as $js_file )
 			{
@@ -260,7 +261,8 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		$this->assets[self::ASSET_JS][] =
 		[
 			'path' => $path,
-			'external' => $external
+			'external' => $external,
+			'delayed' => $delayed
 		];
 	}
 
