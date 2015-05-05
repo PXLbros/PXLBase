@@ -102,14 +102,14 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		];
 		
 		$this->js_layout_filename = 'js/' . str_replace('.', '/', $this->layout_view->getName()) . '.js';
-		$this->js_layout_path = public_path() . '/' . $this->js_layout_filename;
+		$this->js_layout_path = public_path($this->js_layout_filename);
 		$this->js_short_auto_path = 'js/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.js';
-		$this->js_auto_path = public_path() . '/' . $this->js_short_auto_path;
+		$this->js_auto_path = public_path($this->js_short_auto_path);
 		
 		$this->css_layout_filename = 'css/' . str_replace('.', '/', $this->layout_view->getName()) . '.css';
-		$this->css_layout_path = public_path() . '/' . $this->css_layout_filename;
+		$this->css_layout_path = public_path($this->css_layout_filename);
 		$this->css_short_auto_path = 'css/layouts/' . $this->current_controller['original'] . '/' . $this->current_action['underscore'] . '.css';
-		$this->css_auto_path = public_path() . '/' . $this->css_short_auto_path;
+		$this->css_auto_path = public_path($this->css_short_auto_path);
 
 		$this->current_page = $current_controller . '/' . $this->current_action['hyphen'];
 		$this->base_url = \Request::root() . '/';
