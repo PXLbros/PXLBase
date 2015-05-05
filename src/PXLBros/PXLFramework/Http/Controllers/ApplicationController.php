@@ -30,12 +30,12 @@ class ApplicationController extends CoreController
 			$this->_current_controller_parts = explode('/', $this->_current_controller);
 			$this->_current_action = $this->getCurrentAction();
 
-			$assets = json_decode(file_get_contents(base_path() . '/assets.json'), TRUE);
+			$assets = json_decode(file_get_contents(base_path('assets.json')), true);
 
 			foreach ( $assets['libraries'] as $library_name => $library_data )
 			{
-				$css = (isset($library_data['css']) ? $library_data['css'] : NULL);
-				$js = (isset($library_data['js']) ? $library_data['js'] : NULL);
+				$css = (isset($library_data['css']) ? $library_data['css'] : null);
+				$js = (isset($library_data['js']) ? $library_data['js'] : null);
 
 				$this->addLibrary($library_name, $css, $js);
 			}
