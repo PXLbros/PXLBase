@@ -22,11 +22,6 @@ class PXLFrameworkServiceProvider extends \Illuminate\Support\ServiceProvider
 	    [
             __DIR__ . '/../../database/migrations/' => database_path('/migrations')
 		], 'migrations');
-
-		$this->publishes(
-	    [
-	        __DIR__ . '/../../resources/assets' => base_path('resources/assets/vendor/pxlbros/pxlframework'),
-	    ]);
 	}
 
 	public function register()
