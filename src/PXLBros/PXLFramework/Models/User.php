@@ -10,6 +10,8 @@ class User extends Model implements AuthenticatableContract
 
 	protected $table = 'users';
 
+	protected $fillable = ['email', 'first_name', 'last_name', 'password'];
+
 	public static function register($email, $first_name, $last_name, $password = null)
 	{
 		$new_user = User::create(
