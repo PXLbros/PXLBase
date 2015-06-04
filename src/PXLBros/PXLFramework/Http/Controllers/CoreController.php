@@ -410,7 +410,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		);
 	}
 
-	private function generatePageTitle($page_title, $page_title_suffix)
+	private function generatePageTitle($page_title)
 	{
 	    $num_page_title_parts = count($this->page_title_parts);
 
@@ -418,7 +418,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		{
 		    $page_title_separator = \Config::get('pxl.page_title_separator');
 
-			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : ($page_title !== null ? $page_title : '')) . ($num_page_title_parts > 0 ? ($page_title !== null ? ' ' . $page_title_separator . ' ' : '') . implode(' ' . $page_title_separator . ' ', array_reverse($this->page_title_parts)) : '') . ($page_title_suffix ? ' ' . $page_title_separator . ' ' . \Config::get('pxl.page_title_suffix') : ''));
+			return ((is_array($page_title) ? implode(' ' . $page_title_separator . ' ', $page_title) : ($page_title !== null ? $page_title : '')) . ($num_page_title_parts > 0 ? ($page_title !== null ? ' ' . $page_title_separator . ' ' : '') . implode(' ' . $page_title_separator . ' ', array_reverse($this->page_title_parts)) : ''));
 		}
 		else
 		{
@@ -456,11 +456,11 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 	}
 
-	public function display($page_title = null, $page_title_suffix = true, array $libraries = [], array $css_files = [], array $js_files = [], $view_file = null)
+	public function display($page_title = null, $custom_page_title = false, array $libraries = [], array $css_files = [], array $js_files = [], $view_file = null)
 	{
 		$this->beforeDisplay();
 
-		$this->assignLibraryViewData('page_title', $this->generatePageTitle($page_title, $page_title_suffix), self::SECTION_LAYOUT);
+		$this->assignLibraryViewData('page_title', ($custom_page_title === true ? $page_title : $this->generatePageTitle($page_title)), self::SECTION_LAYOUT);
 
 		$this->includeAssets($libraries, $css_files, $js_files);
 

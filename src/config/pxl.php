@@ -1,11 +1,8 @@
 <?php
-$project_name = 'PXLFramework';
-
 return
 [
 	'show_debug' => false,
 
-	'default_page_title' => $project_name,
-	'page_title_separator' => '|',
-	'page_title_suffix' => $project_name
+	'default_page_title' => 'PXLFramework',
+	'page_title_separator' => '|'
 ];

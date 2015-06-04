@@ -6,8 +6,6 @@ class ApplicationController extends CoreController
 	private $_current_controller_parts;
 	private $_current_action;
 
-	protected $auth_required = false;
-
 	function __construct()
 	{
 		$this->beforeFilter('@filterRequests', ['on' => 'get']);
