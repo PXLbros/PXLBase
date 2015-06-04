@@ -428,7 +428,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignCSS()
 	{
-		$css_html_view = view('pxl::layouts.partials.css_includes');
+		$css_html_view = view('pxl::layouts/partials/css_includes');
 		$css_html_view->base_url = $this->base_url;
 		$css_html_view->css_files = $this->assets[self::ASSET_CSS];
 
@@ -437,7 +437,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignInlineJS()
 	{
-		$inline_js_view = view('pxl::layouts.partials.inline_js');
+		$inline_js_view = view('pxl::layouts/partials/inline_js');
 		$inline_js_view->js_variables = $this->data[self::ASSET_JS];
 
 		$this->layout_view->pxl['inline_js'] = $inline_js_view->render();
@@ -445,7 +445,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 	private function assignJS()
 	{
-		$js_html_view = view('pxl::layouts.partials.js_includes');
+		$js_html_view = view('pxl::layouts/partials/js_includes');
 		$js_html_view->base_url = $this->base_url;
 		$js_html_view->js_files = $this->assets[self::ASSET_JS];
 
@@ -478,7 +478,7 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 
 		if ( \Config::get('pxl.show_debug') === true )
 		{
-			$debug_view = view('pxl::layouts.partials.debug');
+			$debug_view = view('pxl::layouts/partials/debug');
 			$debug_view->current_controller = print_r($this->current_controller, true);
 			$debug_view->current_action = print_r($this->current_action, true);
 			$debug_view->current_page = $this->current_page;
