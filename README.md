@@ -16,28 +16,3 @@ APP_DEBUG=true
 3. Add service provider `PXLBros\PXLFramework\PXLFrameworkServiceProvider` to `app/bootstrap.php`
 4. Run `php artisan vendor:publish --provider="PXLBros\PXLFramework\PXLFrameworkServiceProvider"`  
 5. If using user authentication, set `model` to `PXLBros\PXLFramework\Models\User` in `config/auth.php`
-
-## Usage
-
-### Layout Variables
-
-#### $page_title
-Page title
-
-#### $meta_description
-Meta description
-
-#### $css_includes
-<link>'s with included CSS-files
-
-#### $js_includes
-<script>'s with included JS-files
-
-#### $inline_js
-JS variables
-
-#### $content
-Page content
-
-#### $current_page
-Unique identifier of current page

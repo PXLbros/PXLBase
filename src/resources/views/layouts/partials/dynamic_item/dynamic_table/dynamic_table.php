@@ -32,7 +32,7 @@
 			<thead>
 				<tr>
 					<?php foreach ( $table_columns as $table_column ): ?>
-						<th class="<?= \App\Helpers\Core\DynamicTable::convertTableColumnSize($table_column['size']) ?> wide"><?php if ( isset($table_column['sortable']) && $table_column['sortable'] === TRUE ): ?><a href="javascript:"><?= $table_column['text'] ?></a><?php else: ?><?= $table_column['text'] ?><?php endif ?></th>
+						<th class="<?= \PXLBros\PXLFramework\Helpers\DynamicTable::convertTableColumnSize($table_column['size']) ?> wide"><?php if ( isset($table_column['sortable']) && $table_column['sortable'] === TRUE ): ?><a href="javascript:"><?= $table_column['text'] ?></a><?php else: ?><?= $table_column['text'] ?><?php endif ?></th>
 					<?php endforeach ?>
 				</tr>
 			</thead>
