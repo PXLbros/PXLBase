@@ -12,7 +12,11 @@ trait DynamicItem
 		],
 		'table' =>
 		[
-			'route' => null,
+			'routes' =>
+			[
+				'pages' => [],
+				'get' => null
+			],
 			'columns' => [],
 			'default_sorting' =>
 			[
@@ -38,23 +42,77 @@ trait DynamicItem
 
 	public static function configureDynamicItem(array $config)
 	{
-		self::$dynamic_item_config = array_merge(self::$dynamic_item_config, $config);
+		self::$dynamic_item_config = array_replace_recursive(self::$dynamic_item_config, $config);
 	}
 
 	public function initDynamicItem()
 	{
-		if ( \URL::current() === self::$dynamic_item_config['table']['route'] )
+		if ( in_array(\URL::current(), self::$dynamic_item_config['table']['routes']['pages']) )
 		{
 			$dynamic_table_view = view('pxl::layouts/partials/dynamic_item/dynamic_table/dynamic_table_container');
 			//$dynamic_table_view->add_link = $this->dynamic_table_options['urls']['add'];
 			$dynamic_table_view->identifier = self::$dynamic_item_config['identifier'];
 
-			$this->assign('dynamic_item', '1'/*$dynamic_table_view->render()*/);
-			$this->assign('dynamic_item', self::$dynamic_item_config, self::SECTION_JS);
+			$this->assign('dynamic_table', $dynamic_table_view->render());
 		}
+
+		$this->assign('dynamic_item', [ 'config' => self::$dynamic_item_config ], self::SECTION_JS);
 	}
 
 	public function getDynamicTableHTML()
 	{
+		$called_class = get_called_class();
+
+		if ( !method_exists($called_class, 'getDynamicTableData') )
+		{
+			throw new \Exception($called_class . ' is missing required dynamic table function "getDynamicTableData."');
+		}
+
+		if ( !method_exists($called_class, 'setDynamicTableColumnData') )
+		{
+			throw new \Exception($called_class . ' is missing required dynamic table function "setDynamicTableColumnData".');
+		}
+
+		$model = self::$dynamic_item_config['model'];
+
+		$default_sort_column = $this->getTableColumn(self::$dynamic_item_config['table']['default_sorting']['column']);
+
+		$sort_column = \Input::get('sort_column', $default_sort_column['sort']);
+		$sort_order = \Input::get('sort_order', self::$dynamic_item_config['table']['default_sorting']['order']);
+
+		$filters =
+		[
+			'search_query' => trim(\Input::get('search_query'))
+		];
+
+		$items = $this->getDynamicTableData($filters);
+
+		$items = $items->orderBy($sort_column, $sort_order);
+
+		if ( self::$dynamic_item_config['table']['paging']['enabled'] === true )
+		{
+			$items = $items->paginate(self::$dynamic_item_config['table']['paging']['num_per_page']);
+		}
+		else
+		{
+			$items = $items->get();
+		}
+
+		$dynamic_table_column_data_result = $this->setDynamicTableColumnData($items);
+
+		if ( ($dynamic_table_column_data_result === NULL) || (!isset($dynamic_table_column_data_result['items'], $dynamic_table_column_data_result['table_column_data'])) || (!is_array($dynamic_table_column_data_result['items']) && !$dynamic_table_column_data_result['items'] instanceof \Illuminate\Pagination\LengthAwarePaginator) )
+		{
+			throw new \Exception($called_class . ' didn\'t intialize setDynamicTableColumnData correctly.');
+		}
+
+		$items = $dynamic_table_column_data_result['items'];
+		$table_column_data = $dynamic_table_column_data_result['table_column_data'];
+
+		$table_view = view('pxl::layouts/partials/dynamic_item/dynamic_table/dynamic_table');
+	}
+
+	private function getTableColumn($table_column_id)
+	{
+		return (isset(self::$dynamic_item_config['table']['columns'][$table_column_id]) ? self::$dynamic_item_config['table']['columns'][$table_column_id] : null);
 	}
 }

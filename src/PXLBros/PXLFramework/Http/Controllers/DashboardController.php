@@ -6,6 +6,8 @@ class DashboardController extends ApplicationController
 
 	private $breadcrumb_items = [];
 
+	protected $home_route;
+
 	public function afterLayoutInit()
 	{
 		$this->setPageTitleParts('Dashboard');
@@ -30,7 +32,7 @@ class DashboardController extends ApplicationController
 	{
 		if ( $this->current_page !== 'dashboard/home/home' )
 		{
-			$this->addBreadcrumbItem('Dashboard', route('dashboard'));
+			$this->addBreadcrumbItem('Dashboard', ($this->home_route !== null ? $this->home_route : route('dashboard')));
 		}
 	}
 
