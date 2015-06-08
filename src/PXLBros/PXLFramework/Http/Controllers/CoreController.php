@@ -325,16 +325,10 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		}
 	}
 
-	private function includeAssets($libraries, array $css_files, array $js_files)
+	private function includeAssets()
 	{
 		// Pre-loaded libraries
 		foreach ( $this->loaded_libraries[self::LIBRARY_LOAD_PRIORITY_PRE] as $lib_name )
-		{
-			$this->includeLibrary($lib_name);
-		}
-
-		// Libraries loaded from display() function
-		foreach ( $libraries as $lib_name )
 		{
 			$this->includeLibrary($lib_name);
 		}
@@ -365,18 +359,6 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 		if ( file_exists($this->js_auto_path) )
 		{
 			$this->includeJS($this->js_short_auto_path);
-		}
-
-		// CSS loaded from display() function
-		foreach ( $css_files as $css_file )
-		{
-			$this->includeCSS($css_file);
-		}
-
-		// JS loaded from display() function
-		foreach ( $js_files as $js_file )
-		{
-			$this->includeJS($js_file);
 		}
 	}
 
@@ -456,13 +438,13 @@ abstract class CoreController extends \Illuminate\Routing\Controller
 	{
 	}
 
-	public function display($page_title = null, $custom_page_title = false, array $libraries = [], array $css_files = [], array $js_files = [], $view_file = null)
+	public function display($page_title = null, $custom_page_title = false, $view_file = null)
 	{
 		$this->beforeDisplay();
 
 		$this->assignLibraryViewData('page_title', ($custom_page_title === true ? $page_title : $this->generatePageTitle($page_title)), self::SECTION_LAYOUT);
 
-		$this->includeAssets($libraries, $css_files, $js_files);
+		$this->includeAssets();
 
 		$this->includeLibraryViewData();
 		$this->includeContentData();

@@ -196,6 +196,6 @@ trait DynamicItem
 		$this->assign('title_column', self::$dynamic_item_config['item']['title_column']);
 		$this->assign('identifier', self::$dynamic_item_config['identifier']);
 
-		return $this->display([($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add'), ucfirst(str_plural(self::$dynamic_item_config['identifier']))], false, [], [], [], 'pxl::layouts/partials/dynamic_item/item');
+		return $this->display([($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add'), ucfirst(str_plural(self::$dynamic_item_config['identifier']))], false, 'pxl::layouts/partials/dynamic_item/item');
 	}
 }
