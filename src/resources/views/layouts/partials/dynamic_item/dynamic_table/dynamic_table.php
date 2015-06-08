@@ -15,7 +15,7 @@
 		</div>
 
 		<?php if ( $search_enabled ): ?>
-			<div id="dynamic_table_search_container" class="eight wide column">
+			<div id="dynamic_table_search_container" class="ui floated right aligned eight wide column">
 				<div class="ui category search">
 					<div class="ui left icon input">
 						<i class="search icon"></i>
