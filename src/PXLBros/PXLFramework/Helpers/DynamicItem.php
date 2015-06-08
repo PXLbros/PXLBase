@@ -6,6 +6,7 @@ trait DynamicItem
 	[
 		'model' => null,
 		'identifier' => null,
+		'columns' => [],
 		'table' =>
 		[
 			'routes' =>
@@ -33,7 +34,9 @@ trait DynamicItem
 		],
 		'item' =>
 		[
-			'title_column' => null
+			'title_column' => null,
+			'fields' => null,
+			'tabs' => null
 		]
 	];
 
@@ -196,6 +199,60 @@ trait DynamicItem
 		$this->assign('title_column', self::$dynamic_item_config['item']['title_column']);
 		$this->assign('identifier', self::$dynamic_item_config['identifier']);
 
-		return $this->display([($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add'), ucfirst(str_plural(self::$dynamic_item_config['identifier']))], false, 'pxl::layouts/partials/dynamic_item/item');
+		$have_file_upload_field = false;
+
+		if ( is_array(self::$dynamic_item_config['item']['tabs']) )
+		{
+		}
+		elseif ( is_array(self::$dynamic_item_config['item']['fields']) )
+		{
+			$fields = [];
+
+			foreach ( self::$dynamic_item_config['item']['fields'] as $field_id => $field_data )
+			{
+				$column_data = self::$dynamic_item_config['columns'][$field_id];
+
+				if ( $column_data['form']['type'] === 'file' )
+				{
+					$have_file_upload_field = true;
+				}
+
+				$fields[] = self::getFormFieldHTML($field_id, $item_to_edit);
+			}
+		}
+
+		$this->assign('fields', $fields);
+		$this->assign('save_button_html', '<button type="submit" id="dynamic-item-save-button" class="ui submit button">' . ($item_to_edit !== NULL ? 'Save' : 'Add') . '</button>');
+		$this->assign('have_file_upload_field', $have_file_upload_field);
+
+		return $this->display(($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add ' . ucfirst(self::$dynamic_item_config['identifier'])), false, 'pxl::layouts/partials/dynamic_item/item/item');
+	}
+
+	private static function getFormFieldHTML($column_id, $item_to_edit, $params = null)
+	{
+		$column_data = self::$dynamic_item_config['columns'][$column_id];
+
+		$form_field_view = view('pxl::layouts/partials/dynamic_item/item/fields/' . $column_data['form']['type']);
+		$form_field_view->column_id = $column_id;
+		$form_field_view->column_data = $column_data;
+		$form_field_view->item_to_edit = $item_to_edit;
+		$form_field_view->params = $params;
+
+		if ( isset($params['options']) )
+		{
+			$form_field_view->num_options = count($params['options']);
+			$form_field_view->options = $params['options'];
+
+			if ( $column_data['form']['type'] === 'select' && isset($params['selected_option']) )
+			{
+				$form_field_view->selected_option = $params['selected_option'];
+			}
+			elseif ( $column_data['form']['type'] === 'checkbox' && isset($params['selected_options']) )
+			{
+				$form_field_view->selected_options = $params['selected_options'];
+			}
+		}
+
+		return $form_field_view->render();
 	}
 }
