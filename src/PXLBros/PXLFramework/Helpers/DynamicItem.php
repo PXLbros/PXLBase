@@ -5,17 +5,14 @@ trait DynamicItem
 	private static $dynamic_item_config =
 	[
 		'model' => null,
-		'identifier' =>
-		[
-			'singular' => null,
-			'plural' => null
-		],
+		'identifier' => null,
 		'table' =>
 		[
 			'routes' =>
 			[
 				'pages' => [],
-				'get' => null
+				'get' => null,
+				'add' => null
 			],
 			'columns' => [],
 			'default_sorting' =>
@@ -50,7 +47,7 @@ trait DynamicItem
 		if ( in_array(\URL::current(), self::$dynamic_item_config['table']['routes']['pages']) )
 		{
 			$dynamic_table_view = view('pxl::layouts/partials/dynamic_item/dynamic_table/dynamic_table_container');
-			//$dynamic_table_view->add_link = $this->dynamic_table_options['urls']['add'];
+			$dynamic_table_view->add_url = self::$dynamic_item_config['table']['routes']['add'];
 			$dynamic_table_view->identifier = self::$dynamic_item_config['identifier'];
 
 			$this->assign('dynamic_table', $dynamic_table_view->render());

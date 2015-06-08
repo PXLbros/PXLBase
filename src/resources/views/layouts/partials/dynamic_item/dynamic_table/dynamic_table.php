@@ -4,9 +4,9 @@
 			<?php if ( $num_total_filtered_items > 0 ): ?>
 				<p>
 					<?php if ( $paging_enabled ): ?>
-						Showing <?= $num_page_items ?> of <?= $num_total_items ?> <?= $identifier[($num_total_items === 1 ? 'singular' : 'plural')] ?>.
+						Showing <?= $num_page_items ?> of <?= $num_total_items ?> <?= ($num_total_items === 1 ? $identifier : str_plural($identifier)) ?>.
 					<?php else: ?>
-						Showing <?= $num_page_items ?> of <?= $num_total_items ?> <?= $identifier[($num_total_items === 1 ? 'singular' : 'plural')] ?>.
+						Showing <?= $num_page_items ?> of <?= $num_total_items ?> <?= ($num_total_items === 1 ? $identifier : str_plural($identifier)) ?>.
 					<?php endif ?>
 				</p>
 			<?php else: ?>
