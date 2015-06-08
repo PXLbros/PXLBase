@@ -46,7 +46,7 @@ trait DynamicItem
 	{
 		if ( in_array(\URL::current(), self::$dynamic_item_config['table']['routes']['pages']) )
 		{
-			$dynamic_table_view = view('pxl::layouts/partials/dynamic_item/dynamic_table/dynamic_table_container');
+			$dynamic_table_view = view('pxl::layouts/partials/dynamic_item/table/table_container');
 			$dynamic_table_view->add_url = self::$dynamic_item_config['table']['routes']['add'];
 			$dynamic_table_view->identifier = self::$dynamic_item_config['identifier'];
 
@@ -103,7 +103,7 @@ trait DynamicItem
 		$items = $dynamic_table_column_data_result['items'];
 		$table_column_data = $dynamic_table_column_data_result['table_column_data'];
 
-		$table_view = view('pxl::layouts/partials/dynamic_item/dynamic_table/dynamic_table');
+		$table_view = view('pxl::layouts/partials/dynamic_item/table/table');
 
 		$model = self::$dynamic_item_config['model'];
 
@@ -164,5 +164,38 @@ trait DynamicItem
 			case 15: return 'fifteen';
 			case 16: return 'sixteen';
 		}
+	}
+
+	public function dynamicItem($id = NULL)
+	{
+		$called_class = get_called_class();
+
+		$model = self::$dynamic_item_config['model'];
+
+		if ( $id !== NULL )
+		{
+			$title_column = self::$dynamic_item_config['title_column'];
+
+			$item_to_edit = $model::find('id', $id);
+
+			if ( $item_to_edit === null )
+			{
+				$this->ui->showWarning(sprintf(self::$dynamic_item_config['item']['save']['item_not_found']['message'], $id));
+
+				return \Redirect::to(self::$dynamic_item_config['item']['save']['item_not_found']['redirect']);
+			}
+		}
+		else
+		{
+			$item_to_edit = NULL;
+		}
+
+		$this->assign('item_to_edit', $item_to_edit);
+		$this->assign('item_id_to_edit', ($item_to_edit !== NULL ? $item_to_edit->id : NULL), self::SECTION_JS);
+
+		$this->assign('title_column', self::$dynamic_item_config['item']['title_column']);
+		$this->assign('identifier', self::$dynamic_item_config['identifier']);
+
+		return $this->display(($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add'), ucfirst(str_plural(self::$dynamic_item_config['identifier'])), false, [], [], [], 'pxl::layouts/partials/dynamic_item/item');
 	}
 }

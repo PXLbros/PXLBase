@@ -1,0 +1,1 @@
+<h1><?php if ( $item_to_edit !== NULL ): ?><?= e($item_to_edit->$title_column) ?><?php else: ?>Add <?= ucfirst($identifier) ?><?php endif ?></h1>
