@@ -1,6 +1,6 @@
 <?php if ( $num_total_items > 0 ): ?>
-	<div id="dynamic_table_info_row" class="ui grid">
-		<div id="dynamic_table_page_info_container" class="<?= $search_enabled ? 'eight' : 'sixteen' ?> wide column">
+	<div id="dynamic-table-info-row" class="ui grid">
+		<div id="dynamic-table-page-info-container" class="<?= $search_enabled ? 'eight' : 'sixteen' ?> wide column">
 			<?php if ( $num_total_filtered_items > 0 ): ?>
 				<p>
 					<?php if ( $paging_enabled ): ?>
@@ -15,11 +15,11 @@
 		</div>
 
 		<?php if ( $search_enabled ): ?>
-			<div id="dynamic_table_search_container" class="ui floated right aligned eight wide column">
+			<div id="dynamic-table-search-container" class="ui floated right aligned eight wide column">
 				<div class="ui category search">
 					<div class="ui left icon input">
 						<i class="search icon"></i>
-						<input type="text" name="search" id="dynamic_table_search" placeholder="Search" class="prompt" value="<?= $filters['search_query'] ?>">
+						<input type="text" name="search" id="dynamic-table-search" placeholder="Search" class="prompt" value="<?= $filters['search_query'] ?>">
 					</div>
 					<div class="results"></div>
 				</div>
@@ -28,7 +28,7 @@
 	</div>
 
 	<?php if ( $num_total_filtered_items > 0 ): ?>
-		<table id="dynamic_table" class="ui striped table">
+		<table id="dynamic-table" class="ui striped table">
 			<thead>
 				<tr>
 					<?php foreach ( $table_columns as $table_column ): ?>
@@ -38,7 +38,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ( $items as $item_index => $item ): ?>
-					<tr id="dynamic_table_item_<?= $item->id ?>" data-id="<?= $item->id ?>" data-title="<?= $item->table_title ?>">
+					<tr id="dynamic-table-item-<?= $item->id ?>" data-id="<?= $item->id ?>" data-title="<?= $item->table_title ?>">
 						<?php foreach ( $table_columns as $table_column_id => $table_column ): ?>
 							<td>
 								<?= $table_column_data[$item_index][$table_column_id]['html'] ?>
