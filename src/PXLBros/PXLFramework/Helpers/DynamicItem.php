@@ -1,5 +1,8 @@
 <?php namespace PXLBros\PXLFramework\Helpers;
 
+define('DYNAMIC_ITEM_ALWAYS_REQUIRED', 1);
+define('DYNAMIC_ITEM_REQUIRED_ON_ADD', 2);
+
 trait DynamicItem
 {
 	private static $dynamic_item_config =
