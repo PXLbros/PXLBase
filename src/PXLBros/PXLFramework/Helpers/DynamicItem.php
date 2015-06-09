@@ -58,8 +58,6 @@ trait DynamicItem
 
 			$this->assign('dynamic_table', $dynamic_table_view->render());
 		}
-
-		$this->assign('dynamic_item', [ 'config' => self::$dynamic_item_config ], self::SECTION_JS);
 	}
 
 	public function getDynamicTableHTML()
@@ -227,6 +225,16 @@ trait DynamicItem
 		$this->assign('fields', $fields);
 		$this->assign('save_button_html', '<button type="submit" id="dynamic-item-save-button" class="ui submit button">' . ($item_to_edit !== NULL ? 'Save' : 'Add') . '</button>');
 		$this->assign('have_file_upload_field', $have_file_upload_field);
+
+		$dynamic_item_js =
+		[
+			'DYNAMIC_ITEM_ALWAYS_REQUIRED' => DYNAMIC_ITEM_ALWAYS_REQUIRED,
+			'DYNAMIC_ITEM_REQUIRED_ON_ADD' => DYNAMIC_ITEM_REQUIRED_ON_ADD,
+			'config' => self::$dynamic_item_config,
+			'columns' => self::$dynamic_item_config['columns']
+		];
+
+		$this->assign('dynamic_item', $dynamic_item_js, self::SECTION_JS);
 
 		return $this->display(($item_to_edit !== NULL ? e($item_to_edit->$title_column) : 'Add ' . ucfirst(self::$dynamic_item_config['identifier'])), false, 'pxl::layouts/partials/dynamic_item/item/item');
 	}
