@@ -53,10 +53,12 @@ trait DynamicItem
 		if ( in_array(\URL::current(), self::$dynamic_item_config['table']['routes']['pages']) )
 		{
 			$dynamic_table_view = view('pxl::layouts/partials/dynamic_item/table/table_container');
-			$dynamic_table_view->add_url = self::$dynamic_item_config['table']['routes']['add'];
+			$dynamic_table_view->add_url = self::$dynamic_item_config['item']['routes']['add'];
 			$dynamic_table_view->identifier = self::$dynamic_item_config['identifier'];
 
 			$this->assign('dynamic_table', $dynamic_table_view->render());
+
+			$this->assign('dynamic_item', [ 'config' => self::$dynamic_item_config, 'current_page' => 'table' ], self::SECTION_JS);
 		}
 	}
 
@@ -231,7 +233,8 @@ trait DynamicItem
 			'DYNAMIC_ITEM_ALWAYS_REQUIRED' => DYNAMIC_ITEM_ALWAYS_REQUIRED,
 			'DYNAMIC_ITEM_REQUIRED_ON_ADD' => DYNAMIC_ITEM_REQUIRED_ON_ADD,
 			'config' => self::$dynamic_item_config,
-			'columns' => self::$dynamic_item_config['columns']
+			'columns' => self::$dynamic_item_config['columns'],
+			'current_page' => 'item'
 		];
 
 		$this->assign('dynamic_item', $dynamic_item_js, self::SECTION_JS);
@@ -265,5 +268,14 @@ trait DynamicItem
 		}
 
 		return $form_field_view->render();
+	}
+
+	public function saveDynamicItem()
+	{
+		$called_class = get_called_class();
+
+		$input = \Input::all();
+
+		return $this->ajax->output();
 	}
 }

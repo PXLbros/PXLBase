@@ -8,13 +8,13 @@ class ApplicationController extends CoreController
 
 	function __construct()
 	{
+		$this->user = \Auth::user();
+
 		$this->beforeFilter('@filterRequests', ['on' => 'get']);
 	}
 
 	public function filterRequests($route, $request)
 	{
-		$this->user = \Auth::user();
-
 		$this->assign('user', $this->user, [self::SECTION_LAYOUT, self::SECTION_CONTENT]);
 	}
 
