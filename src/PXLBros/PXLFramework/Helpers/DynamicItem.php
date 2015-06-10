@@ -5,6 +5,10 @@ define('DYNAMIC_ITEM_REQUIRED_ON_ADD', 2);
 
 trait DynamicItem
 {
+	private static $column_types_to_trim = [ 'text', 'textarea', 'email' ];
+
+	private static $column_types_with_custom_saving = [ 'image' ];
+
 	private static $dynamic_item_config =
 	[
 		'model' => null,
@@ -38,6 +42,7 @@ trait DynamicItem
 		'item' =>
 		[
 			'title_column' => null,
+			'slug_column' => null,
 			'fields' => null,
 			'tabs' => null
 		]
@@ -197,7 +202,6 @@ trait DynamicItem
 		}
 
 		$this->assign('item_to_edit', $item_to_edit);
-		$this->assign('item_id_to_edit', ($item_to_edit !== NULL ? $item_to_edit->id : NULL), self::SECTION_JS);
 
 		$this->assign('title_column', self::$dynamic_item_config['item']['title_column']);
 		$this->assign('identifier', self::$dynamic_item_config['identifier']);
@@ -234,7 +238,8 @@ trait DynamicItem
 			'DYNAMIC_ITEM_REQUIRED_ON_ADD' => DYNAMIC_ITEM_REQUIRED_ON_ADD,
 			'config' => self::$dynamic_item_config,
 			'columns' => self::$dynamic_item_config['columns'],
-			'current_page' => 'item'
+			'current_page' => 'item',
+			'item_id_to_edit' => ($item_to_edit !== null ? $item_to_edit->id : null)
 		];
 
 		$this->assign('dynamic_item', $dynamic_item_js, self::SECTION_JS);
@@ -270,12 +275,163 @@ trait DynamicItem
 		return $form_field_view->render();
 	}
 
-	public function saveDynamicItem()
+	public function saveDynamicItem($id = null)
 	{
 		$called_class = get_called_class();
 
 		$input = \Input::all();
 
+		$have_custom_saving_columns = ($input['have_custom_saving_columns'] === 'yes');
+
+		$model = self::$dynamic_item_config['model'];
+		$dynamic_item_title_column = self::$dynamic_item_config['item']['title_column'];
+
+		if ( $id !== NULL )
+		{
+			try
+			{
+				/*$item_to_edit = $model::where('id', $id)->firstOrFail();
+
+				if ( method_exists($called_class, 'dynamicItemPreEdit') )
+				{
+					$this->dynamicItemPreEdit($item_to_edit);
+				}
+
+				// Delete
+				foreach ( $items_to_delete as $item_to_delete_column_id )
+				{
+					$this->deleteDynamicItemColumn($item_to_edit, $item_to_delete_column_id);
+				}
+
+				// Edit
+				$item_to_edit->edit($input);
+
+				if ( method_exists($called_class, 'dynamicItemPostEdit') )
+				{
+					$this->dynamicItemPostEdit($item_to_edit);
+				}
+
+				$success_message = sprintf($this->dynamic_item_options['save']['edit']['success']['message'], $item_to_edit->$dynamic_item_title_column);
+
+				if ( $have_custom_saving_columns === TRUE )
+				{
+					$this->ui->showSuccess($success_message);
+				}
+				else
+				{
+					$this->ajax->showSuccess($success_message);
+
+					return $this->ajax->redirect((isset($this->dynamic_item_options['save']['edit']['success']['redirect']) ? $this->dynamic_item_options['save']['edit']['success']['redirect'] : ''), 750);
+				}*/
+			}
+			catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e )
+			{
+				//$this->ajax->showWarning(sprintf(self::$dynamic_item_config['item_not_found']['message'], $id));
+
+				return $this->ajax->output();
+			}
+		}
+		else
+		{
+			$added_item = self::addDynamicItem($input);
+
+			$this->ajax->addData('added_item_id', $added_item->id);
+
+			//$success_message = sprintf($this->dynamic_item_options['save']['add']['success']['message'], $added_item->$dynamic_item_title_column);
+
+			if ( $have_custom_saving_columns === TRUE )
+			{
+				//$this->ui->showSuccess($success_message);
+			}
+			else
+			{
+				//$this->ajax->showSuccess($success_message);
+			}
+		}
+
 		return $this->ajax->output();
+	}
+
+	private static function addDynamicItem($input)
+	{
+		$save_data = self::assignSaveData($input);
+
+		$item = new self::$dynamic_item_config['model'];
+
+		foreach ( self::$dynamic_item_config['columns'] as $column_id => $column_data )
+		{
+			if ( in_array($column_data['form']['type'], self::$column_types_with_custom_saving) || empty($column_data['column']) )
+			{
+				continue;
+			}
+
+			$item->$column_data['column'] = $save_data[$column_id];
+		}
+
+		if ( self::$dynamic_item_config['item']['slug_column'] !== NULL )
+		{
+			$item->slug = $save_data['slug'];
+		}
+
+		$item->save();
+
+		if ( method_exists(get_called_class(), 'postAdd') )
+		{
+			self::postAdd($item, $save_data);
+		}
+
+		return $item;
+	}
+
+	private static function assignSaveData($input)
+	{
+		$save_data = [];
+
+		foreach ( $input as $input_key => $input_value )
+		{
+			if ( !isset(self::$dynamic_item_config['columns'][$input_key]) )
+			{
+				continue;
+			}
+
+			$column_data = self::$dynamic_item_config['columns'][$input_key];
+
+			if ( (isset($column_data['nullable']) && $column_data['nullable'] === true) && empty($input_value) )
+			{
+				$input_value = null;
+			}
+			elseif ( in_array($column_data['form']['type'], self::$column_types_to_trim) )
+			{
+				$input_value = trim($input_value);
+			}
+			elseif ( $column_data['form']['type'] === 'password' )
+			{
+				$input_value = bcrypt($input_value);
+			}
+
+			if ( !in_array($column_data['form']['type'], self::$column_types_with_custom_saving) )
+			{
+				$save_data[$input_key] = $input_value;
+			}
+		}
+
+		$called_class = get_called_class();
+
+		if ( self::$dynamic_item_config['item']['slug_column'] !== null )
+		{
+			if ( !isset($save_data[self::$dynamic_item_config['item']['slug_column']]) )
+			{
+				throw new \Exception($called_class . ' is trying to slugify column "' . self::$dynamic_item_config['item']['slug_column'] . '" which is not defined.');
+			}
+
+			$save_data['slug'] = str_slug(self::$dynamic_item_config['item']['slug_column']);
+		}
+
+		if ( method_exists($called_class, 'postAssignSaveData') )
+		{
+			$save_data = self::postAssignSaveData($save_data, $input);
+		}
+
+		return $save_data;
 	}
 }
