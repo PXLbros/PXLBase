@@ -41,6 +41,12 @@ trait DynamicItem
 		],
 		'item' =>
 		[
+			'routes' =>
+			[
+				'add' => null,
+				'added_redirect' => null,
+				'edited_redirect' => null
+			],
 			'title_column' => null,
 			'slug_column' => null,
 			'fields' => null,
@@ -185,9 +191,9 @@ trait DynamicItem
 
 		if ( $id !== NULL )
 		{
-			$title_column = self::$dynamic_item_config['title_column'];
+			$title_column = self::$dynamic_item_config['item']['title_column'];
 
-			$item_to_edit = $model::find('id', $id);
+			$item_to_edit = $model::find($id);
 
 			if ( $item_to_edit === null )
 			{
@@ -290,39 +296,39 @@ trait DynamicItem
 		{
 			try
 			{
-				/*$item_to_edit = $model::where('id', $id)->firstOrFail();
+				$item_to_edit = $model::find($id);
 
 				if ( method_exists($called_class, 'dynamicItemPreEdit') )
 				{
-					$this->dynamicItemPreEdit($item_to_edit);
+					self::dynamicItemPreEdit($item_to_edit);
 				}
 
 				// Delete
-				foreach ( $items_to_delete as $item_to_delete_column_id )
+				/*foreach ( $items_to_delete as $item_to_delete_column_id )
 				{
 					$this->deleteDynamicItemColumn($item_to_edit, $item_to_delete_column_id);
-				}
+				}*/
 
 				// Edit
-				$item_to_edit->edit($input);
+				$edited_item_data = self::editDynamicItem($item_to_edit, $input);
 
 				if ( method_exists($called_class, 'dynamicItemPostEdit') )
 				{
 					$this->dynamicItemPostEdit($item_to_edit);
 				}
 
-				$success_message = sprintf($this->dynamic_item_options['save']['edit']['success']['message'], $item_to_edit->$dynamic_item_title_column);
+				//$success_message = sprintf($this->dynamic_item_options['save']['edit']['success']['message'], $item_to_edit->$dynamic_item_title_column);
 
-				if ( $have_custom_saving_columns === TRUE )
+				if ( $have_custom_saving_columns === true )
 				{
-					$this->ui->showSuccess($success_message);
+					//$this->ui->showSuccess($success_message);
 				}
 				else
 				{
-					$this->ajax->showSuccess($success_message);
+					//$this->ajax->showSuccess($success_message);
 
-					return $this->ajax->redirect((isset($this->dynamic_item_options['save']['edit']['success']['redirect']) ? $this->dynamic_item_options['save']['edit']['success']['redirect'] : ''), 750);
-				}*/
+					return $this->ajax->redirect(($edited_item_data['redirect'] !== null ? $edited_item_data['redirect'] : ''), 750);
+				}
 			}
 			catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e )
 			{
@@ -333,9 +339,9 @@ trait DynamicItem
 		}
 		else
 		{
-			$added_item = self::addDynamicItem($input);
+			$added_item_data = self::addDynamicItem($input);
 
-			$this->ajax->addData('added_item_id', $added_item->id);
+			$this->ajax->assign('added_item_id', $added_item_data['added_item']->id);
 
 			//$success_message = sprintf($this->dynamic_item_options['save']['add']['success']['message'], $added_item->$dynamic_item_title_column);
 
@@ -346,6 +352,8 @@ trait DynamicItem
 			else
 			{
 				//$this->ajax->showSuccess($success_message);
+
+				return $this->ajax->redirect(($added_item_data['redirect'] !== null ? $added_item_data['redirect'] : ''), 750);
 			}
 		}
 
@@ -377,10 +385,47 @@ trait DynamicItem
 
 		if ( method_exists(get_called_class(), 'postAdd') )
 		{
-			self::postAdd($item, $save_data);
+			$post_add_data = self::postAdd($item, $save_data);
 		}
 
-		return $item;
+		return
+		[
+			'added_item' => $item,
+			'redirect' => (isset($post_add_data['redirect']) ? $post_add_data['redirect'] : self::$dynamic_item_config['item']['routes']['added_redirect'])
+		];
+	}
+
+	private static function editDynamicItem($item_to_edit, $input)
+	{
+		$save_data = self::assignSaveData($input);
+
+		foreach ( self::$dynamic_item_config['columns'] as $column_id => $column_data )
+		{
+			if ( in_array($column_data['form']['type'], self::$column_types_with_custom_saving) || empty($column_data['column']) )
+			{
+				continue;
+			}
+
+			$item_to_edit->$column_data['column'] = $save_data[$column_id];
+		}
+
+		if ( self::$dynamic_item_config['item']['slug_column'] !== null )
+		{
+			$item_to_edit->slug = $save_data['slug'];
+		}
+
+		$item_to_edit->save();
+
+		if ( method_exists(get_called_class(), 'postEdit') )
+		{
+			$post_edit_data = $item_to_edit->postEdit($save_data);
+		}
+
+		return
+		[
+			'edited_item' => $item_to_edit,
+			'redirect' => (isset($post_edit_data['redirect']) ? $post_edit_data['redirect'] : self::$dynamic_item_config['item']['routes']['edited_redirect'])
+		];
 	}
 
 	private static function assignSaveData($input)
