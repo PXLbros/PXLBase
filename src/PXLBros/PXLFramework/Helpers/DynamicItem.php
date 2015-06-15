@@ -50,7 +50,8 @@ trait DynamicItem
 			'title_column' => null,
 			'slug_column' => null,
 			'fields' => null,
-			'tabs' => null
+			'tabs' => null,
+			'soft_delete' => false
 		]
 	];
 
@@ -120,6 +121,18 @@ trait DynamicItem
 		$items = $dynamic_table_column_data_result['items'];
 		$table_column_data = $dynamic_table_column_data_result['table_column_data'];
 
+		$manage_dropdown_view = view('pxl::layouts/partials/dynamic_item/table/manage_dropdown');
+
+		foreach ( $table_column_data as $item_index => $item )
+		{
+			$manage_dropdown_view->item = $items[$item_index];
+
+			$table_column_data[$item_index]['manage'] =
+			[
+				'html' => $manage_dropdown_view->render()
+			];
+		}
+
 		$table_view = view('pxl::layouts/partials/dynamic_item/table/table');
 
 		$model = self::$dynamic_item_config['model'];
@@ -140,6 +153,12 @@ trait DynamicItem
 			$table_view->num_total_filtered_items = $num_items;
 			$table_view->num_page_items = $num_items;
 		}
+
+		self::$dynamic_item_config['table']['columns']['manage'] =
+		[
+			'text' => 'Manage',
+			'size' => 2
+		];
 
 		$table_view->identifier = self::$dynamic_item_config['identifier'];
 		$table_view->table_columns = self::$dynamic_item_config['table']['columns'];
@@ -201,10 +220,14 @@ trait DynamicItem
 
 				return \Redirect::to(self::$dynamic_item_config['item']['save']['item_not_found']['redirect']);
 			}
+
+			$this->addBreadcrumbItem($item_to_edit->$title_column);
 		}
 		else
 		{
 			$item_to_edit = NULL;
+
+			$this->addBreadcrumbItem('Add ' . ucfirst(self::$dynamic_item_config['identifier']));
 		}
 
 		$this->assign('item_to_edit', $item_to_edit);

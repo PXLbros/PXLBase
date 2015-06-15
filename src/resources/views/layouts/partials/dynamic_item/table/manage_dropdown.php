@@ -4,8 +4,8 @@
 		Manage
 
 		<div class="menu">
-			<a href="<?= $item->dynamicItem->editURL ?>" class="item">Edit</a>
-			<a href="<?= $item->dynamicItem->deleteURL ?>" class="item delete-button">Delete</a>
+			<a href="<?= $item->manageDropdown['edit_url'] ?>" class="item">Edit</a>
+			<a href="<?= $item->manageDropdown['delete_url'] ?>" class="item delete-button">Delete</a>
 		</div>
 	</div>
 </div>

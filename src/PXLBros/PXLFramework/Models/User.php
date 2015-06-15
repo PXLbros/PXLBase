@@ -14,6 +14,11 @@ class User extends Model implements AuthenticatableContract
 
 	public static function register($email, $first_name, $last_name, $password = null)
 	{
+		if ( $password === null )
+		{
+			$password = str_random(8);
+		}
+
 		$new_user = User::create(
 		[
 			'email' => $email,
